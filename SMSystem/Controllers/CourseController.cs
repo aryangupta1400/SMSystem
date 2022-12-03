@@ -19,5 +19,27 @@ namespace SMSystem.Controllers
 
             return View(courses);
         }
+
+        public ActionResult AddCourse()
+        {
+            
+
+            return View();
+        }
+
+        public ActionResult DeleteCourse()
+        {
+
+
+            return View();
+        }
+
+        public ActionResult EditCourse()
+        {
+
+
+            return View();
+        }
+
     }
 }

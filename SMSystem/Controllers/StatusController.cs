@@ -13,9 +13,11 @@ namespace SMSystem.Controllers
 
         StudentInformationDBEntities studentInformationDBEntities = new StudentInformationDBEntities();
 
-        public ActionResult Index()
+        public ActionResult StatusList()
         {
-            return View();
+            var status = studentInformationDBEntities.Status.ToList();
+
+            return View(status);
         }
     }
 }

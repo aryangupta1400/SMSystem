@@ -230,10 +230,13 @@
     <Content Include="Views\Course\CourseList.cshtml" />
     <Content Include="Views\Student\StudentList.cshtml" />
     <Content Include="Views\Student\StudentRegistration.cshtml" />
+    <Content Include="Views\Course\AddCourse.cshtml" />
+    <Content Include="Views\Course\EditCourse.cshtml" />
+    <Content Include="Views\Course\DeleteCourse.cshtml" />
+    <Content Include="Views\Status\StatusList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Status\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

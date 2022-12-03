@@ -4,10 +4,10 @@
     ViewBag.Title = "StudentList";
 }
 
-<h2>StudentList</h2>
+<h2>Student List</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "StudentRegistration")
 </p>
 <table class="table">
     <tr>
@@ -41,9 +41,9 @@
         <th>
             @Html.DisplayNameFor(model => model.Cours.CourseName)
         </th>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.Parent.FatherName)
-        </th>
+        </th>*@
         <th>
             @Html.DisplayNameFor(model => model.Status.StatusDescription)
         </th>
@@ -82,9 +82,9 @@
         <td>
             @Html.DisplayFor(modelItem => item.Cours.CourseName)
         </td>
-        <td>
+        @*<td>
             @Html.DisplayFor(modelItem => item.Parent.FatherName)
-        </td>
+        </td>*@
         <td>
             @Html.DisplayFor(modelItem => item.Status.StatusDescription)
         </td>

@@ -52,7 +52,6 @@ namespace SMSystem.Models
         [Required]
         public Nullable<int> StatusCode { get; set; }
 
-        public Nullable<int> ParentId { get; set; }
 
         [Display(Name = "Father Name")]
         [Required]
@@ -63,9 +62,9 @@ namespace SMSystem.Models
 
         [Display(Name = "Father Phone No.")]
         [Required]
-        [MinLength(10)]
-        [MaxLength(10)]
-        public Nullable<int> FatherMobile { get; set; }
+        /*[MinLength(10)]
+        [MaxLength(10)]*/
+        public string FatherMobile { get; set; }
 
         [Display(Name = "Mother Name")]
         [Required]
@@ -76,9 +75,9 @@ namespace SMSystem.Models
 
         [Display(Name = "Mother Phone No.")]
         [Required]
-        [MinLength(10)]
-        [MaxLength(10)]
-        public Nullable<int> MotherMobile { get; set; }
+        /*[MinLength(10)]
+        [MaxLength(10)]*/
+        public string MotherMobile { get; set; }
 
         [Display(Name = "Mother Occupation")]
         [Required]
