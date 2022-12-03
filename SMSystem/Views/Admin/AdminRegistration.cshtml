@@ -1,0 +1,50 @@
+﻿@model SMSystem.Models.AdminModel
+
+@{
+    ViewBag.Title = "AdminRegistration";
+}
+
+<h2>Admin Registration</h2>
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval");
+}
+
+<head>
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+</head>
+
+<style>
+    .error {
+        color: red
+    }
+</style>
+
+@using (Html.BeginForm("AdminRegistration", "Admin", FormMethod.Post))
+{
+    @Html.LabelFor(l => l.AdminName, new { @class = "", placeholder = "Enter your full name" })
+    @Html.TextBoxFor(d => d.AdminName)
+    @Html.ValidationMessageFor(m => m.AdminName, "", new { @class = "error" })
+
+    <br />
+
+    @Html.LabelFor(l => l.AdminEmail, new { @class = "", placeholder = "Enter your email-id" })
+    @Html.TextBoxFor(d => d.AdminEmail)
+    @Html.ValidationMessageFor(m => m.AdminEmail, "", new { @class = "error" })
+    <br />
+
+    @Html.LabelFor(l => l.Password, new { @class = "", placeholder = "Enter an unique password" })
+    @Html.TextBoxFor(d => d.Password)
+    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "error" })
+
+    <br />
+    @Html.LabelFor(l => l.ConfirmPassword, new { @class = "", placeholder = "Re-enter password" })
+    @Html.TextBoxFor(d => d.ConfirmPassword)
+    @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "error" })
+
+    <br />
+
+    <button type="submit">Register</button>
+}
