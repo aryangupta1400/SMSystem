@@ -35,12 +35,12 @@
     @Html.ValidationMessageFor(m => m.AdminEmail, "", new { @class = "error" })
     <br />
 
-    @Html.LabelFor(l => l.Password, new { @class = "", placeholder = "Enter an unique password" })
+    @Html.LabelFor(l => l.Password, new { @class = "", placeholder = "Enter an unique password", type = "password" })
     @Html.TextBoxFor(d => d.Password)
     @Html.ValidationMessageFor(m => m.Password, "", new { @class = "error" })
 
     <br />
-    @Html.LabelFor(l => l.ConfirmPassword, new { @class = "", placeholder = "Re-enter password" })
+    @Html.LabelFor(l => l.ConfirmPassword, new { @class = "", placeholder = "Re-enter password", type = "password" })
     @Html.TextBoxFor(d => d.ConfirmPassword)
     @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "error" })
 

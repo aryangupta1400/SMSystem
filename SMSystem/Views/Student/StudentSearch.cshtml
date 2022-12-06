@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<SMSystem.Models.Student>
 
 @{
-    ViewBag.Title = "StudentList";
+    ViewBag.Title = "StudentSearch";
 }
 
-<h2>Student List</h2>
+<h2>StudentSearch</h2>
 
 <p>
     @Html.ActionLink("Create New", "StudentRegistration")
@@ -115,10 +115,7 @@
                     @Html.DisplayFor(modelItem => item.StudentDoB, new { @class = "", type = "date" })
                 </td>
                 <td>
-                    @{
-                        var date = DateTime.Now.Date.Subtract(item.StudentDoB.Value);
-                        @Html.DisplayFor(modelItem => item.StudentAge)
-                    }
+                    @Html.DisplayFor(modelItem => item.StudentAge)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Address)
@@ -145,51 +142,8 @@
         }
     }
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.StudentId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StudentName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StudentEmail)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StudentMobile)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Gender)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StudentDoB, new { @class = "", type = "date" })
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StudentAge)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.JoiningDate, new { @class = "", type = "date" })
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cours.CourseName)
-            </td>
-            @*<td>
-                    @Html.DisplayFor(modelItem => item.Parent.FatherName)
-                </td>*@
-            <td>
-                @Html.DisplayFor(modelItem => item.Status.StatusDescription)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "EditStudent", new { id = item.StudentId })
-                @*@Html.ActionLink("Details", "Details", new { id=item.StudentId }) |*@
-                @*@Html.ActionLink("Delete", "Delete", new { id=item.StudentId })*@
-            </td>
-        </tr>
-    }
-
 </table>
+
+<div>
+    @Html.ActionLink("Back to List", "StudentList")
+</div>

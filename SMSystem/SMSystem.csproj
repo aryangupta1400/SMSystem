@@ -144,6 +144,7 @@
     <Compile Include="Models\Cours.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CourseModel.cs" />
     <Compile Include="Models\DBModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -232,8 +233,9 @@
     <Content Include="Views\Student\StudentRegistration.cshtml" />
     <Content Include="Views\Course\AddCourse.cshtml" />
     <Content Include="Views\Course\EditCourse.cshtml" />
-    <Content Include="Views\Course\DeleteCourse.cshtml" />
     <Content Include="Views\Status\StatusList.cshtml" />
+    <Content Include="Views\Student\EditStudent.cshtml" />
+    <Content Include="Views\Student\StudentSearch.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

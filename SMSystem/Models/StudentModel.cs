@@ -9,6 +9,7 @@ namespace SMSystem.Models
 {
     public class StudentModel
     {
+        [Display(Name = "Student Id")]
         public int StudentId { get; set; }
 
         [Display(Name = "Student Name")]
@@ -31,7 +32,7 @@ namespace SMSystem.Models
 
         [Display(Name = "Date of birth")]
         [Required]
-        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> StudentDoB { get; set; }
         public Nullable<int> StudentAge { get; set; }
 
@@ -45,14 +46,14 @@ namespace SMSystem.Models
 
         [Display(Name = "Joining Date")]
         [Required]
-        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> JoiningDate { get; set; }
 
         [Display(Name = "Current Status")]
         [Required]
         public Nullable<int> StatusCode { get; set; }
 
-
+/*
         [Display(Name = "Father Name")]
         [Required]
         public string FatherName { get; set; }
@@ -62,8 +63,8 @@ namespace SMSystem.Models
 
         [Display(Name = "Father Phone No.")]
         [Required]
-        /*[MinLength(10)]
-        [MaxLength(10)]*/
+        *//*[MinLength(10)]
+        [MaxLength(10)]*//*
         public string FatherMobile { get; set; }
 
         [Display(Name = "Mother Name")]
@@ -75,8 +76,8 @@ namespace SMSystem.Models
 
         [Display(Name = "Mother Phone No.")]
         [Required]
-        /*[MinLength(10)]
-        [MaxLength(10)]*/
+        *//*[MinLength(10)]
+        [MaxLength(10)]*//*
         public string MotherMobile { get; set; }
 
         [Display(Name = "Mother Occupation")]
@@ -85,6 +86,6 @@ namespace SMSystem.Models
 
         [Display(Name = "Father Occupation")]
         [Required]
-        public string FatherOccupation { get; set; }
+        public string FatherOccupation { get; set; }*/
     }
 }

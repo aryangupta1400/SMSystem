@@ -42,7 +42,7 @@
 
     <br />
 
-    @Html.LabelFor(l => l.Password, new { @class = "", placeholder = "Enter your password." })
+    @Html.LabelFor(l => l.Password, new { @class = "", placeholder = "Enter your password.", type = "password" })
     @Html.TextBoxFor(d => d.Password)
     @Html.ValidationMessageFor(m => m.Password, "", new { @class = "error" })
 

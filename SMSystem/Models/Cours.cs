@@ -11,7 +11,8 @@ namespace SMSystem.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Cours
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -19,10 +20,20 @@ namespace SMSystem.Models
         {
             this.Students = new HashSet<Student>();
         }
-    
+
+        [Display(Name = "Course Id")]
         public int CourseId { get; set; }
+
+        [Display(Name = "Course Name")]
+        [Required]
         public string CourseName { get; set; }
+
+        [Display(Name = "Duration")]
+        [Required]
         public int Duration { get; set; }
+
+        [Display(Name = "Description")]
+        [Required]
         public string Description { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

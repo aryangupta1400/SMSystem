@@ -11,20 +11,62 @@ namespace SMSystem.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Student
     {
+        [Display(Name = "Student Id")]
         public int StudentId { get; set; }
+
+        [Display(Name = "Student Name")]
+        [Required]
         public string StudentName { get; set; }
+
+        [Display(Name = "Student Email")]
+        [Required]
+        [EmailAddress]
         public string StudentEmail { get; set; }
+
+        [Display(Name = "Student Phone no.")]
+        [MinLength(10)]
+        [MaxLength(10)]
         public string StudentMobile { get; set; }
+
+        [Display(Name = "Gender")]
+        [Required]
         public string Gender { get; set; }
+
+        [Display(Name = "Date of birth")]
+        [Required]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> StudentDoB { get; set; }
-        public Nullable<int> StudentAge { get; set; }
+
+        [Display(Name = "Age")]
+        public Nullable<int> StudentAge { get
+            /*{
+                DateTime now = DateTime.Today;
+                int age = now.Year - StudentDoB.Value.Year;
+                if (StudentDoB > now.AddYears(-age)) age--;
+                return age;
+            }*/; set; }
+
+        [Display(Name = "Address")]
+        [Required]
         public string Address { get; set; }
+
+        [Display(Name = "Course")]
+        [Required]
         public int CourseId { get; set; }
+
+        [Display(Name = "Joining Date")]
+        [Required]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> JoiningDate { get; set; }
+
+        [Display(Name = "Current Status")]
+        [Required]
         public Nullable<int> StatusCode { get; set; }
+
         public Nullable<int> ParentId { get; set; }
     
         public virtual Cours Cours { get; set; }

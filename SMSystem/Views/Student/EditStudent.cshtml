@@ -1,19 +1,22 @@
-﻿@model SMSystem.Models.StudentModel
+﻿@model SMSystem.Models.Student
 
 @{
-    ViewBag.Title = "StudentRegistration";
+    ViewBag.Title = "EditStudent";
 }
 
-<h2>Student Registration</h2>
+<h2>Edit Student Details</h2>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
+    @Html.HiddenFor(s => s.StudentId)
     
     <div class="form-horizontal">
         <h4>Student</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.StudentId)
+
         <div class="form-group">
             @Html.LabelFor(model => model.StudentName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -54,7 +57,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.StudentDoB, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.StudentDoB, new { htmlAttributes = new { @class = "form-control", type = "date" } })
+                @Html.EditorFor(model => model.StudentDoB, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.StudentDoB, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -86,7 +89,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.JoiningDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.JoiningDate, new { htmlAttributes = new { @class = "form-control", type = "date" } })
+                @Html.EditorFor(model => model.JoiningDate, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.JoiningDate, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -109,7 +112,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Register" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </div>
     </div>

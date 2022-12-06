@@ -35,7 +35,7 @@ namespace SMSystem.Controllers
 
                 ModelState.Clear();
 
-                return View("AdminLogin");
+                return RedirectToAction("AdminLogin");
             }
             return View();            
         }
@@ -70,11 +70,13 @@ namespace SMSystem.Controllers
             return View(user);
         }
 
+
         public ActionResult Logout()
         {
-            Session["UserId"] = null;
-            return RedirectToAction("Login");
+            Session["AdminId"] = null;
+            return RedirectToAction("AdminLogin");
         }
+
 
         public JsonResult doesAdminExist(string AdminEmail)
         {
