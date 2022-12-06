@@ -11,8 +11,7 @@ namespace SMSystem.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Status
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -20,11 +19,8 @@ namespace SMSystem.Models
         {
             this.Students = new HashSet<Student>();
         }
-
-        [Display(Name = "Status Code")]
+    
         public int StatusCode { get; set; }
-
-        [Display(Name = "Status Description")]
         public string StatusDescription { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

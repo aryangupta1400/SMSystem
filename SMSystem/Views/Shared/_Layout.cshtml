@@ -16,21 +16,48 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("SMS", "Dashboard", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
+
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    @*<li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
-                    <li>@Html.ActionLink("Registration", "AdminRegistration", "Admin")</li>
-                    <li>@Html.ActionLink("Login", "AdminLogin", "Admin")</li>
-                    <li>@Html.ActionLink("Courses", "CourseList", "Course")</li>
-                    <li>@Html.ActionLink("Status", "StatusList", "Status")</li>
-                </ul>
+
+                @if (Session["AdminId"] == null)
+                {
+                    <div class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                            <li>@Html.ActionLink("Registration", "AdminRegistration", "Admin")</li>
+                        </ul>
+                        <ul class="nav navbar-nav">
+                            <li>@Html.ActionLink("Login", "AdminLogin", "Admin")</li>
+                        </ul>
+                    </div>
+                }
+
+
+                @if (Session["AdminId"] != null)
+                {
+                    <div class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                            <li>@Html.ActionLink("Courses", "CourseList", "Course")</li>
+                        </ul>
+                        <ul class="nav navbar-nav">
+                            <li>@Html.ActionLink("Status", "StatusList", "Status")</li>
+                        </ul>
+                        <ul class="nav navbar-nav">
+                            <li>@Html.ActionLink("Students", "StudentList", "Student")</li>
+                        </ul>
+                        <ul class="nav navbar-nav">
+                            <li style="color: white; padding-top:15px; padding-left:280px "><p style="">Welcome @Session["AdminName"]!</p>  </li>
+                        </ul>
+                        <ul class="nav navbar-nav">
+                            <li style="padding-left:350px">@Html.ActionLink("Logout", "Logout", "Admin")</li>
+                        </ul>
+                    </div>
+                }
             </div>
         </div>
     </div>
+
     <div class="container body-content">
         @RenderBody()
         <hr />

@@ -11,26 +11,12 @@ namespace SMSystem.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Administrator
     {
         public int AdminId { get; set; }
-
-        [Display(Name = "Name")]
-        [Required(ErrorMessage = "Requried")]
         public string AdminName { get; set; }
-
-        [Display(Name = "Email")]
-        [Required(ErrorMessage = "Requried")]
-        [EmailAddress]
         public string AdminEmail { get; set; }
-
-        [Display(Name = "Password")]
-        [Required(ErrorMessage = "Requried")]
-        [DataType(DataType.Password)]
-        [PasswordPropertyText]
         public string Password { get; set; }
     }
 }

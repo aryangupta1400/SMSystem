@@ -40,15 +40,7 @@ namespace SMSystem.Models
         [Required]
         [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> StudentDoB { get; set; }
-
-        [Display(Name = "Age")]
-        public Nullable<int> StudentAge { get
-            /*{
-                DateTime now = DateTime.Today;
-                int age = now.Year - StudentDoB.Value.Year;
-                if (StudentDoB > now.AddYears(-age)) age--;
-                return age;
-            }*/; set; }
+        public Nullable<int> StudentAge { get; set; }
 
         [Display(Name = "Address")]
         [Required]
@@ -66,7 +58,6 @@ namespace SMSystem.Models
         [Display(Name = "Current Status")]
         [Required]
         public Nullable<int> StatusCode { get; set; }
-
         public Nullable<int> ParentId { get; set; }
     
         public virtual Cours Cours { get; set; }

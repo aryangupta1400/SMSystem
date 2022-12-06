@@ -4,7 +4,14 @@
     ViewBag.Title = "StudentSearch";
 }
 
-<h2>StudentSearch</h2>
+@if (@ViewBag.Message != null)
+{
+    <div style="border: 1px solid red; margin-bottom:10px;">
+        @ViewBag.Message
+    </div>
+}
+
+<h2>Student List</h2>
 
 <p>
     @Html.ActionLink("Create New", "StudentRegistration")

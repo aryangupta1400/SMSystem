@@ -19,10 +19,12 @@ namespace SMSystem.Controllers
 
         public ActionResult StudentRegistration()
         {
-            SelectListItem[] courseName = GetCourseList();
+            if (Session["AdminId"] != null)
+            {
+                SelectListItem[] courseName = GetCourseList();
 
-            SelectListItem[] status = GetStatusList();
-
+                SelectListItem[] status = GetStatusList();
+            }
             return View();
         }
 
@@ -68,7 +70,7 @@ namespace SMSystem.Controllers
                 return View(students);
             }
 
-            return RedirectToAction("About", "Home");
+            return RedirectToAction("Dashboard", "Home");
         }
 
         public ActionResult EditStudent(int? id)
@@ -127,9 +129,17 @@ namespace SMSystem.Controllers
             
             if (searchBy == "StudentId" && search != null)
             {
-                int? id = Convert.ToInt32(search);
-                var model = studentInformationDBEntities.Students.Where(s => s.StudentId == id || id == null).ToList();
-                return View(model);
+                try
+                {
+                    int? id = Convert.ToInt32(search);
+                    var model = studentInformationDBEntities.Students.Where(s => s.StudentId == id || id == null).ToList();
+                    return View(model);
+                }
+                catch(Exception ex)
+                {
+                    ViewBag.Message = "Please enter numeric values only..!";
+                    return View();
+                }                
             }
             else if (searchBy == "StudentName" && search != null)
             {
