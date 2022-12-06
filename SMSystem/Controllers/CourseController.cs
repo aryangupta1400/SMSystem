@@ -19,6 +19,11 @@ namespace SMSystem.Controllers
         {
             var courses = studentInformationDBEntities.Courses.ToList();
 
+            if (TempData["errorMessage"] != null)
+            {
+                ViewBag.Message = TempData["errorMessage"];
+            }
+
             return View(courses);
         }
 
@@ -44,26 +49,28 @@ namespace SMSystem.Controllers
         }
 
         public ActionResult DeleteCourse(int id)
-        {
-            Cours course = studentInformationDBEntities.Courses.Find(id);
-
+        {           
             try
-            {                
+            {
+                Cours course = studentInformationDBEntities.Courses.Find(id);
+
                 studentInformationDBEntities.Courses.Remove(course);
 
                 studentInformationDBEntities.SaveChanges();
 
-                ViewBag.Message = "Students are already enrolled in the course.";
+                //ViewBag.Message = "Students are already enrolled in the course.";
 
             }
             catch (Exception ex)
             {
-                ViewBag.Message = "Students are already enrolled in the course.";
+                //ViewBag.Message = "Students are already enrolled in the course.";
 
-                return View("CourseList");
+                TempData["errorMessage"] = "Students are already enrolled in the course.";
+
+                return RedirectToAction("CourseList");
             }
 
-            return View();
+            return RedirectToAction("CourseList");
         }
 
         /*public ActionResult DeleteCourse(Cours course)

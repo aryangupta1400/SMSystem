@@ -120,6 +120,10 @@ namespace SMSystem.Controllers
 
         public ActionResult StudentSearch(string searchBy, string search)
         {
+            if(search == "" || search == null)
+            {
+                return RedirectToAction("StudentList");
+            }
             
             if (searchBy == "StudentId" && search != null)
             {

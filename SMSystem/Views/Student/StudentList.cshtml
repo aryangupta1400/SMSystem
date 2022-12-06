@@ -144,7 +144,7 @@
 
         }
     }
-
+    @*
     @foreach (var item in Model)
     {
         <tr>
@@ -181,15 +181,15 @@
             @*<td>
                     @Html.DisplayFor(modelItem => item.Parent.FatherName)
                 </td>*@
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.Status.StatusDescription)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "EditStudent", new { id = item.StudentId })
+            </td>*@
+            @*<td>*@
+                @*@Html.ActionLink("Edit", "EditStudent", new { id = item.StudentId })*@
                 @*@Html.ActionLink("Details", "Details", new { id=item.StudentId }) |*@
                 @*@Html.ActionLink("Delete", "Delete", new { id=item.StudentId })*@
-            </td>
+            @*</td>
         </tr>
-    }
+    }*@
 
 </table>
