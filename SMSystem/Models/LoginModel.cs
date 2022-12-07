@@ -11,6 +11,7 @@ namespace SMSystem.Models
 {
     public class LoginModel
     {
+        
         [Display(Name = "Email")]
         [Required(ErrorMessage = "Requried")]
         [EmailAddress]

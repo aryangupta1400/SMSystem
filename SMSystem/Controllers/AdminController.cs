@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -27,7 +28,8 @@ namespace SMSystem.Controllers
 
                 administrator.AdminName = newAdministrator.AdminName;
                 administrator.AdminEmail = newAdministrator.AdminEmail;
-                administrator.Password = newAdministrator.Password;
+
+                administrator.Password = EncryptPassword(newAdministrator.Password);
 
                 studentInformationDBEntities.Administrators.Add(administrator);
 
@@ -53,9 +55,9 @@ namespace SMSystem.Controllers
             if (ModelState.IsValid)
             {
                 var admin = studentInformationDBEntities.Administrators.ToList()
-                            .Where(a => a.AdminEmail.Equals(user.AdminEmail) && a.Password.Equals(user.Password)).FirstOrDefault();
+                            .Where(a => a.AdminEmail.Equals(user.AdminEmail)).FirstOrDefault();
 
-                if(admin != null && (admin.Password == user.Password))
+                if(admin != null && (DecryptPassword(admin.Password) == user.Password))
                 {
                     Session["AdminId"] = admin.AdminId.ToString();
                     Session["AdminName"] = admin.AdminName.ToString();
@@ -82,6 +84,41 @@ namespace SMSystem.Controllers
         {
             return Json(!studentInformationDBEntities.Administrators.Any(x => x.AdminEmail == AdminEmail), JsonRequestBehavior.AllowGet);
         }
+
+        private string EncryptPassword(string password)
+        {
+            StringBuilder encryptedPassword = new StringBuilder(password);
+            for (int i = 0; i < password.Length; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    encryptedPassword[i] = (char)(((int)password[i]) + 1);
+                }
+                else
+                {
+                    encryptedPassword[i] = (char)(((int)password[i]) - 1);
+                }
+            }
+            return encryptedPassword.ToString();
+        }
+
+        private string DecryptPassword(string password)
+        {
+            StringBuilder encryptedPassword = new StringBuilder(password);
+            for (int i = 0; i < password.Length; i++)
+            {
+                if (i % 2 != 0)
+                {
+                    encryptedPassword[i] = (char)(((int)password[i]) + 1);
+                }
+                else
+                {
+                    encryptedPassword[i] = (char)(((int)password[i]) - 1);
+                }
+            }
+            return encryptedPassword.ToString();
+        }
+
     }
 }
 

@@ -138,35 +138,87 @@ namespace SMSystem.Controllers
                 catch(Exception ex)
                 {
                     ViewBag.Message = "Please enter numeric values only..!";
-                    return View();
+                    var model = studentInformationDBEntities.Students.Where(s => s.StudentId == 0 ).ToList();
+                    return View(model);
                 }                
             }
             else if (searchBy == "StudentName" && search != null)
             {
-                var model = studentInformationDBEntities.Students.Where(s => s.StudentName.Contains(search) || search == null).ToList();
-                return View(model);
+                
+                try
+                {
+                    var model = studentInformationDBEntities.Students.Where(s => s.StudentName.Contains(search) || search == null).ToList();
+                    return View(model);
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Message = "Please enter alphabets only..!";
+                    var model = studentInformationDBEntities.Students.Where(s => s.StudentId == 0).ToList();
+                    return View(model);
+                }
+                
             }
             else if (searchBy == "StudentEmail" && search != null)
             {
-                var model = studentInformationDBEntities.Students.Where(s => s.StudentEmail == search.ToLower() || search.ToLower() == null).ToList();
-                return View(model);
+                try
+                {
+                    var model = studentInformationDBEntities.Students.Where(s => s.StudentEmail == search.ToLower() || search.ToLower() == null).ToList();
+                    return View(model);
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Message = "Please enter alphabets only..!";
+                    var model = studentInformationDBEntities.Students.Where(s => s.StudentId == 0).ToList();
+                    return View(model);
+                }
+                
             }
             else if (searchBy == "Gender" && search != null)
             {
-                var model = studentInformationDBEntities.Students.Where(s => s.Gender.ToLower() == search.ToLower() || search == null).ToList();
-                return View(model);
+                try
+                {
+                    var model = studentInformationDBEntities.Students.Where(s => s.Gender.ToLower() == search.ToLower() || search == null).ToList();
+                    return View(model);
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Message = "Please enter alphabets only..!";
+                    var model = studentInformationDBEntities.Students.Where(s => s.StudentId == 0).ToList();
+                    return View(model);
+                }
+                
             }
             else if (searchBy == "CourseId" && search != null)
             {
-                int? id = GetCourseId(search);
-                var model = studentInformationDBEntities.Students.Where(s => s.CourseId == id || id == null).ToList();
-                return View(model);
+                try
+                {
+                    int? id = GetCourseId(search);
+                    var model = studentInformationDBEntities.Students.Where(s => s.CourseId == id || id == null).ToList();
+                    return View(model);
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Message = "Please enter alphabets only..!";
+                    var model = studentInformationDBEntities.Students.Where(s => s.StudentId == 0).ToList();
+                    return View(model);
+                }
+                
             }
             else if (searchBy == "StatusCode" && search != null)
             {
-                int? id = GetStatusCode(search);
-                var model = studentInformationDBEntities.Students.Where(s => s.StatusCode == id || id == null).ToList();
-                return View(model);
+                try
+                {
+                    int? id = GetStatusCode(search);
+                    var model = studentInformationDBEntities.Students.Where(s => s.StatusCode == id || id == null).ToList();
+                    return View(model);
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Message = "Please enter alphabets only..!";
+                    var model = studentInformationDBEntities.Students.Where(s => s.StudentId == 0).ToList();
+                    return View(model);
+                }
+                
             }
             
             return RedirectToAction("StudentList");

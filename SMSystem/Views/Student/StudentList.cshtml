@@ -13,6 +13,13 @@
 
 <h2>Student List</h2>
 
+@if (@ViewBag.Message != null)
+{
+    <h3 style="margin:10px; color: red; padding:10px">
+        @ViewBag.Message
+    </h3>
+}
+
 <p>
     @Html.ActionLink("Create New", "StudentRegistration")
 </p>

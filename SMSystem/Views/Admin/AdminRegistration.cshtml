@@ -24,26 +24,47 @@
 
 @using (Html.BeginForm("AdminRegistration", "Admin", FormMethod.Post))
 {
-    @Html.LabelFor(l => l.AdminName, new { @class = "", placeholder = "Enter your full name" })
-    @Html.TextBoxFor(d => d.AdminName)
-    @Html.ValidationMessageFor(m => m.AdminName, "", new { @class = "error" })
+
+    <div>
+        @Html.LabelFor(l => l.AdminName, new { @class = "", placeholder = "Enter your full name" })
+        <div>
+            @Html.TextBoxFor(d => d.AdminName)
+            @Html.ValidationMessageFor(m => m.AdminName, "", new { @class = "error" })
+        </div>
+    </div>
 
     <br />
 
-    @Html.LabelFor(l => l.AdminEmail, new { @class = "", placeholder = "Enter your email-id" })
-    @Html.TextBoxFor(d => d.AdminEmail)
-    @Html.ValidationMessageFor(m => m.AdminEmail, "", new { @class = "error" })
+    <div>
+        @Html.LabelFor(l => l.AdminEmail, new { @class = "", placeholder = "Enter your email-id" })
+        <div>
+            @Html.TextBoxFor(d => d.AdminEmail)
+            @Html.ValidationMessageFor(m => m.AdminEmail, "", new { @class = "error" })
+        </div>
+    </div>
+
     <br />
 
-    @Html.LabelFor(l => l.Password, new { @class = "", placeholder = "Enter an unique password", type = "password" })
-    @Html.PasswordFor(d => d.Password)
-    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "error" })
+    <div>
+        @Html.LabelFor(l => l.Password, new { @class = "", placeholder = "Enter an unique password", type = "password" })
+        <div>
+            @Html.PasswordFor(d => d.Password)
+            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "error" })
+        </div>
+    </div>
 
     <br />
-    @Html.LabelFor(l => l.ConfirmPassword, new { @class = "", placeholder = "Re-enter password", type = "password" })
-    @Html.PasswordFor(d => d.ConfirmPassword)
-    @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "error" })
 
+    <div>
+        @Html.LabelFor(l => l.ConfirmPassword, new { @class = "", placeholder = "Re-enter password", type = "password" })
+        <div>
+            @Html.PasswordFor(d => d.ConfirmPassword)
+            @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "error" })
+        </div>
+    </div>
+
+    
+    <br />
     <br />
 
     <button type="submit">Register</button>
