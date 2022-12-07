@@ -193,6 +193,10 @@ namespace SMSystem.Controllers
                 try
                 {
                     int? id = GetCourseId(search);
+                    if(id == 0)
+                    {
+                        ViewBag.Message = "Please enter a valid course name..!";
+                    }
                     var model = studentInformationDBEntities.Students.Where(s => s.CourseId == id || id == null).ToList();
                     return View(model);
                 }
@@ -209,6 +213,10 @@ namespace SMSystem.Controllers
                 try
                 {
                     int? id = GetStatusCode(search);
+                    if(id == 0)
+                    {
+                        ViewBag.Message = "Please enter a valid status..!";
+                    }
                     var model = studentInformationDBEntities.Students.Where(s => s.StatusCode == id || id == null).ToList();
                     return View(model);
                 }
@@ -229,7 +237,15 @@ namespace SMSystem.Controllers
             int courseId = 0;                       
 
             var courses = studentInformationDBEntities.Courses.ToList().Where(x => x.CourseName == course).FirstOrDefault();
-            courseId = courses.CourseId;                       
+            if(courses != null)
+            {
+                courseId = courses.CourseId;
+            }
+            else
+            {
+                courseId = 0;
+            }
+                                  
 
             return courseId;
         }
@@ -239,8 +255,15 @@ namespace SMSystem.Controllers
             int statusCode = 0;
 
             var statuses = studentInformationDBEntities.Status.ToList().Where(x => x.StatusDescription == status).FirstOrDefault();
-            statusCode = statuses.StatusCode;
-
+            if (statuses != null)
+            {
+                statusCode = statuses.StatusCode;
+            }
+            else
+            {
+                statusCode = 0;
+            }
+            
             return statusCode;
         }
 
