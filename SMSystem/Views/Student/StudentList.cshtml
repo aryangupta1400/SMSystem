@@ -63,21 +63,21 @@
         <th>
             @Html.DisplayNameFor(model => model.StudentEmail)
         </th>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.StudentMobile)
-        </th>
+        </th>*@
         <th>
             @Html.DisplayNameFor(model => model.Gender)
         </th>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.StudentDoB)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.StudentAge)
-        </th>
-        <th>
+        </th>*@
+       @*<th>
             @Html.DisplayNameFor(model => model.Address)
-        </th>
+        </th>*@
         <th>
             @Html.DisplayNameFor(model => model.JoiningDate)
         </th>
@@ -119,13 +119,13 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.StudentEmail)
                 </td>
-                <td>
+                @*<td>
                     @Html.DisplayFor(modelItem => item.StudentMobile)
-                </td>
+                </td>*@
                 <td>
                     @Html.DisplayFor(modelItem => item.Gender)
                 </td>
-                <td>
+                @*<td>
                     @Html.DisplayFor(modelItem => item.StudentDoB, new { @class = "", type = "date" })
                 </td>
                 <td>
@@ -133,10 +133,10 @@
                         var date = DateTime.Now.Date.Subtract(item.StudentDoB.Value);
                         @Html.DisplayFor(modelItem => item.StudentAge)
                     }
-                </td>
-                <td>
+                </td>*@
+                @*<td>
                     @Html.DisplayFor(modelItem => item.Address)
-                </td>
+                </td>*@
                 <td>
                     @Html.DisplayFor(modelItem => item.JoiningDate, new { @class = "", type = "date" })
                 </td>
@@ -150,8 +150,8 @@
                     @Html.DisplayFor(modelItem => item.Status.StatusDescription)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "EditStudent", new { id = item.StudentId })
-                    @*@Html.ActionLink("Details", "Details", new { id=item.StudentId }) |*@
+                    @Html.ActionLink("Edit", "EditStudent", new { id = item.StudentId }) | 
+                    @Html.ActionLink("Profile", "StudentProfile", new { id=item.StudentId })
                     @*@Html.ActionLink("Delete", "Delete", new { id=item.StudentId })*@
                 </td>
             </tr>

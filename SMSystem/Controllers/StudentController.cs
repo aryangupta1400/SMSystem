@@ -37,7 +37,7 @@ namespace SMSystem.Controllers
             SelectListItem[] status = GetStatusList();
             //Student student = new Student();
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid) 
             {
                 /*student.StudentName = newStudent.StudentName;
                 student.StudentEmail = newStudent.StudentEmail;
@@ -230,6 +230,13 @@ namespace SMSystem.Controllers
             }
             
             return RedirectToAction("StudentList");
+        }
+
+        public ActionResult StudentProfile(int? id)
+        {
+            Student student = studentInformationDBEntities.Students.Find(id);
+
+            return View(student);
         }
 
         protected int GetCourseId(string course)
