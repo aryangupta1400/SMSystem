@@ -15,9 +15,15 @@ namespace SMSystem.Controllers
 
         public ActionResult StatusList()
         {
-            var status = studentInformationDBEntities.Status.ToList();
+            if (Session["AdminId"] != null)
+            {
+                var status = studentInformationDBEntities.Status.ToList();
 
-            return View(status);
+                return View(status);
+            }
+            
+            return RedirectToAction("LoginError", "Home");
+
         }
     }
 }

@@ -1,6 +1,9 @@
-﻿using SMSystem.Models;
+﻿using PagedList;
+using PagedList.Mvc;
+using SMSystem.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
@@ -8,6 +11,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
 
 namespace SMSystem.Controllers
 {
@@ -24,227 +28,294 @@ namespace SMSystem.Controllers
                 SelectListItem[] courseName = GetCourseList();
 
                 SelectListItem[] status = GetStatusList();
+                                
             }
-            return View();
+
+            return RedirectToAction("LoginError", "Home");
+
         }
 
         [HttpPost]
         public async Task<ActionResult> StudentRegistration(Student newStudent)
         {
 
-            SelectListItem[] courseName = GetCourseList();
-
-            SelectListItem[] status = GetStatusList();
-            //Student student = new Student();
-
-            if (ModelState.IsValid) 
+            if (Session["AdminId"] != null)
             {
-                /*student.StudentName = newStudent.StudentName;
-                student.StudentEmail = newStudent.StudentEmail;
-                student.StudentMobile = newStudent.StudentMobile;
-                student.Gender = newStudent.Gender;
-                student.StudentDoB = newStudent.StudentDoB;
-                student.Address = newStudent.Address;
-                student.JoiningDate = newStudent.JoiningDate;
-                student.CourseId = newStudent.CourseId;
-                student.StatusCode = newStudent.StatusCode;*/
+                SelectListItem[] courseName = GetCourseList();
 
-                studentInformationDBEntities.Students.Add(newStudent);
+                SelectListItem[] status = GetStatusList();
 
-                await studentInformationDBEntities.SaveChangesAsync();
+                ViewBag.ageError = null;
 
-                ModelState.Clear();
+                if (ModelState.IsValid)
+                {
+                    Student student = new Student();
 
-                return RedirectToAction("StudentList");
+                    /*student.StudentName = newStudent.StudentName;
+                    student.StudentEmail = newStudent.StudentEmail;
+                    student.StudentMobile = newStudent.StudentMobile;
+                    student.Gender = newStudent.Gender;
+                    student.StudentDoB = newStudent.StudentDoB;
+                    student.Address = newStudent.Address;
+                    student.JoiningDate = newStudent.JoiningDate;
+                    student.CourseId = newStudent.CourseId;
+                    student.StatusCode = newStudent.StatusCode;*/
+
+                    student.StudentAge = CalculateAge((DateTime)newStudent.StudentDoB);
+
+                    /*if (student.StudentAge >= 16)
+                    {
+                        studentInformationDBEntities.Students.Add(newStudent);
+
+                        await studentInformationDBEntities.SaveChangesAsync();
+
+                        ModelState.Clear();
+                    }
+                    else
+                    {
+                        ViewBag.ageError = "Age of the student must be atleast 16.";
+
+                        return View();
+                    }*/
+
+                    studentInformationDBEntities.Students.Add(newStudent);
+
+                    await studentInformationDBEntities.SaveChangesAsync();
+
+                    ModelState.Clear();
+
+                    return RedirectToAction("StudentList");
+                }
             }
 
-            return View();
+            return RedirectToAction("LoginError", "Home");
+
         }
 
-        public ActionResult StudentList()
+        public ActionResult StudentList(int? page)
         {
             if (Session["AdminId"] != null)
             {
-                var students = studentInformationDBEntities.Students.ToList();
-
+                var students = studentInformationDBEntities.Students.OrderByDescending(l => l.StudentId).ToList().ToPagedList(page??1, 3);
+                                
                 return View(students);
             }
 
-            return RedirectToAction("Dashboard", "Home");
+            return RedirectToAction("LoginError", "Home");
+        }
+                
+        public int CalculateAge(DateTime dob)
+        {
+            int age = 0;
+            TimeSpan span = DateTime.Now - dob;
+            var diff = span.TotalDays;
+            age = (int) diff/365;
+
+            return age;
+        }
+
+        public JsonResult CheckAge(DateTime StudentDoB)
+        {
+            int age = CalculateAge(StudentDoB);
+            return Json(age >= 16 ? true : false, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult EditStudent(int? id)
         {
-
-            SelectListItem[] courseName = GetCourseList();
-
-
-            SelectListItem[] status = GetStatusList();
-
-
-            if (id == null)
+            if (Session["AdminId"] != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                SelectListItem[] courseName = GetCourseList();
+
+                SelectListItem[] status = GetStatusList();
+
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+
+                Student student = studentInformationDBEntities.Students.Find(id);
+
+                if (student == null)
+                {
+                    return HttpNotFound();
+                }
+
+                return View(student);
+
+                /*if (Session["StudentId"] != null)
+                {
+
+                }*/
+
+                //return View();
+
             }
 
-            Student student = studentInformationDBEntities.Students.Find(id);
+            return RedirectToAction("LoginError", "Home");
 
-            if (student == null)
-            {
-                return HttpNotFound();
-            }
-
-            return View(student);
-
-            /*if (Session["StudentId"] != null)
-            {
-                
-            }*/
-
-            //return View();
+            
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult EditStudent([Bind(Include = "StudentId, StudentName, StudentEmail, StudentMobile, Gender, StudentDoB, StudentAge, Address, CourseId, JoiningDate, StatusCode, ParentId")] Student student)
         {
-            if (ModelState.IsValid)
+            if (Session["AdminId"] != null)
             {
-                studentInformationDBEntities.Entry(student).State = EntityState.Modified;
+                if (ModelState.IsValid)
+                {
+                    student.StudentAge = CalculateAge((DateTime)student.StudentDoB);
 
-                studentInformationDBEntities.SaveChanges();
+                    studentInformationDBEntities.Entry(student).State = EntityState.Modified;
 
-                return RedirectToAction("StudentList");
+                    studentInformationDBEntities.SaveChanges();
+
+                    return RedirectToAction("StudentList");
+                }
+
+                return View();
             }
 
-            return View();
+            return RedirectToAction("LoginError", "Home");                                    
         }
 
-        public ActionResult StudentSearch(string searchBy, string search)
+        public ActionResult StudentSearch(string searchBy, string search, int? page)
         {
-            if(search == "" || search == null)
+            if (Session["AdminId"] != null)
             {
+                if (search == "" || search == null)
+                {
+                    return RedirectToAction("StudentList");
+                }
+
+                if (searchBy == "StudentId" && search != null)
+                {
+                    try
+                    {
+                        int? id = Convert.ToInt32(search);
+                        var model = studentInformationDBEntities.Students.Where(s => s.StudentId == id || id == null).ToList().ToPagedList(page ?? 1, 3); ;
+                        return View(model);
+                    }
+                    catch (Exception ex)
+                    {
+                        ViewBag.Message = "Please enter numeric values only..!";
+                        var model = studentInformationDBEntities.Students.Where(s => s.StudentId == 0).ToList().ToPagedList(page ?? 1, 3); ;
+                        return View(model);
+                    }
+                }
+                else if (searchBy == "StudentName" && search != null)
+                {
+
+                    try
+                    {
+                        var model = studentInformationDBEntities.Students.Where(s => s.StudentName.StartsWith(search) || search == null).ToList().ToPagedList(page ?? 1, 3); ;
+                        return View(model);
+                    }
+                    catch (Exception ex)
+                    {
+                        ViewBag.Message = "Please enter alphabets only..!";
+                        var model = studentInformationDBEntities.Students.Where(s => s.StudentId == 0).ToList().ToPagedList(page ?? 1, 3); ;
+                        return View(model);
+                    }
+
+                }
+                else if (searchBy == "StudentEmail" && search != null)
+                {
+                    try
+                    {
+                        var model = studentInformationDBEntities.Students.Where(s => s.StudentEmail == search.ToLower() || search.ToLower() == null).ToList().ToPagedList(page ?? 1, 3); ;
+                        return View(model);
+                    }
+                    catch (Exception ex)
+                    {
+                        ViewBag.Message = "Please enter alphabets only..!";
+                        var model = studentInformationDBEntities.Students.Where(s => s.StudentId == 0).ToList().ToPagedList(page ?? 1, 3); ;
+                        return View(model);
+                    }
+
+                }
+                else if (searchBy == "Gender" && search != null)
+                {
+                    try
+                    {
+                        var model = studentInformationDBEntities.Students.Where(s => s.Gender.ToLower() == search.ToLower() || search == null).ToList().ToPagedList(page ?? 1, 3); ;
+                        return View(model);
+                    }
+                    catch (Exception ex)
+                    {
+                        ViewBag.Message = "Please enter alphabets only..!";
+                        var model = studentInformationDBEntities.Students.Where(s => s.StudentId == 0).ToList().ToPagedList(page ?? 1, 3); ;
+                        return View(model);
+                    }
+
+                }
+                else if (searchBy == "CourseId" && search != null)
+                {
+                    try
+                    {
+                        int? id = GetCourseId(search);
+                        if (id == 0)
+                        {
+                            ViewBag.Message = "Please enter a valid course name..!";
+                        }
+                        var model = studentInformationDBEntities.Students.Where(s => s.CourseId == id || id == null).ToList().ToPagedList(page ?? 1, 3); ;
+                        return View(model);
+                    }
+                    catch (Exception ex)
+                    {
+                        ViewBag.Message = "Please enter alphabets only..!";
+                        var model = studentInformationDBEntities.Students.Where(s => s.StudentId == 0).ToList().ToPagedList(page ?? 1, 3); ;
+                        return View(model);
+                    }
+
+                }
+                else if (searchBy == "StatusCode" && search != null)
+                {
+                    try
+                    {
+                        int? id = GetStatusCode(search);
+                        if (id == 0)
+                        {
+                            ViewBag.Message = "Please enter a valid status..!";
+                        }
+                        var model = studentInformationDBEntities.Students.Where(s => s.StatusCode == id || id == null).ToList().ToPagedList(page ?? 1, 3); ;
+                        return View(model);
+                    }
+                    catch (Exception ex)
+                    {
+                        ViewBag.Message = "Please enter alphabets only..!";
+                        var model = studentInformationDBEntities.Students.Where(s => s.StudentId == 0).ToList().ToPagedList(page ?? 1, 3); ;
+                        return View(model);
+                    }
+
+                }
+
                 return RedirectToAction("StudentList");
             }
+
+            return RedirectToAction("LoginError", "Home");
             
-            if (searchBy == "StudentId" && search != null)
-            {
-                try
-                {
-                    int? id = Convert.ToInt32(search);
-                    var model = studentInformationDBEntities.Students.Where(s => s.StudentId == id || id == null).ToList();
-                    return View(model);
-                }
-                catch(Exception ex)
-                {
-                    ViewBag.Message = "Please enter numeric values only..!";
-                    var model = studentInformationDBEntities.Students.Where(s => s.StudentId == 0 ).ToList();
-                    return View(model);
-                }                
-            }
-            else if (searchBy == "StudentName" && search != null)
-            {
-                
-                try
-                {
-                    var model = studentInformationDBEntities.Students.Where(s => s.StudentName.Contains(search) || search == null).ToList();
-                    return View(model);
-                }
-                catch (Exception ex)
-                {
-                    ViewBag.Message = "Please enter alphabets only..!";
-                    var model = studentInformationDBEntities.Students.Where(s => s.StudentId == 0).ToList();
-                    return View(model);
-                }
-                
-            }
-            else if (searchBy == "StudentEmail" && search != null)
-            {
-                try
-                {
-                    var model = studentInformationDBEntities.Students.Where(s => s.StudentEmail == search.ToLower() || search.ToLower() == null).ToList();
-                    return View(model);
-                }
-                catch (Exception ex)
-                {
-                    ViewBag.Message = "Please enter alphabets only..!";
-                    var model = studentInformationDBEntities.Students.Where(s => s.StudentId == 0).ToList();
-                    return View(model);
-                }
-                
-            }
-            else if (searchBy == "Gender" && search != null)
-            {
-                try
-                {
-                    var model = studentInformationDBEntities.Students.Where(s => s.Gender.ToLower() == search.ToLower() || search == null).ToList();
-                    return View(model);
-                }
-                catch (Exception ex)
-                {
-                    ViewBag.Message = "Please enter alphabets only..!";
-                    var model = studentInformationDBEntities.Students.Where(s => s.StudentId == 0).ToList();
-                    return View(model);
-                }
-                
-            }
-            else if (searchBy == "CourseId" && search != null)
-            {
-                try
-                {
-                    int? id = GetCourseId(search);
-                    if(id == 0)
-                    {
-                        ViewBag.Message = "Please enter a valid course name..!";
-                    }
-                    var model = studentInformationDBEntities.Students.Where(s => s.CourseId == id || id == null).ToList();
-                    return View(model);
-                }
-                catch (Exception ex)
-                {
-                    ViewBag.Message = "Please enter alphabets only..!";
-                    var model = studentInformationDBEntities.Students.Where(s => s.StudentId == 0).ToList();
-                    return View(model);
-                }
-                
-            }
-            else if (searchBy == "StatusCode" && search != null)
-            {
-                try
-                {
-                    int? id = GetStatusCode(search);
-                    if(id == 0)
-                    {
-                        ViewBag.Message = "Please enter a valid status..!";
-                    }
-                    var model = studentInformationDBEntities.Students.Where(s => s.StatusCode == id || id == null).ToList();
-                    return View(model);
-                }
-                catch (Exception ex)
-                {
-                    ViewBag.Message = "Please enter alphabets only..!";
-                    var model = studentInformationDBEntities.Students.Where(s => s.StudentId == 0).ToList();
-                    return View(model);
-                }
-                
-            }
-            
-            return RedirectToAction("StudentList");
         }
 
         public ActionResult StudentProfile(int? id)
         {
-            Student student = studentInformationDBEntities.Students.Find(id);
+            if (Session["AdminId"] != null)
+            {
+                Student student = studentInformationDBEntities.Students.Find(id);
 
-            return View(student);
+                return View(student);
+            }
+
+            return RedirectToAction("LoginError", "Home");
+            
         }
 
         protected int GetCourseId(string course)
         {
-            int courseId = 0;                       
+            int courseId = 0;
 
             var courses = studentInformationDBEntities.Courses.ToList().Where(x => x.CourseName == course).FirstOrDefault();
-            if(courses != null)
+            if (courses != null)
             {
                 courseId = courses.CourseId;
             }
@@ -252,7 +323,6 @@ namespace SMSystem.Controllers
             {
                 courseId = 0;
             }
-                                  
 
             return courseId;
         }
@@ -270,9 +340,16 @@ namespace SMSystem.Controllers
             {
                 statusCode = 0;
             }
-            
+
             return statusCode;
         }
+
+        /*protected int GetStatusCode()
+        {
+            int a = 0;
+
+            return a;
+        }*/
 
         protected SelectListItem[] GetCourseList()
         {
@@ -310,5 +387,31 @@ namespace SMSystem.Controllers
             }).ToArray(); ; // this will carry data to the view page
         }
     }
+
+    public class AgeValidator : ValidationAttribute
+    {
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            if (value != null)
+            {
+                StudentController studentController = new StudentController();
+                int age = studentController.CalculateAge((DateTime)value);
+
+                if (age >= 16)
+                {
+                    return ValidationResult.Success;
+                }
+                else
+                {
+                    return new ValidationResult("Age of the student must be atleast 16.");
+                }
+            }
+            else
+            {
+                return new ValidationResult("" + validationContext.DisplayName + " is required");
+            }
+        }
+    }
+
 }
 

@@ -1,9 +1,11 @@
-﻿using System;
+﻿using SMSystem.Controllers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Web;
+using System.Web.Mvc;
 
 namespace SMSystem.Models
 {
@@ -32,8 +34,9 @@ namespace SMSystem.Models
 
         [Display(Name = "Date of birth")]
         [Required]
-        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
-        public Nullable<System.DateTime> StudentDoB { get; set; }
+        [Remote("CheckAge", "Student", ErrorMessage = "Age must be atlest 16 years.")]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]        
+        public DateTime StudentDoB { get; set; }
         public Nullable<int> StudentAge { get; set; }
 
         [Display(Name = "Address")]

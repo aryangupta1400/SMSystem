@@ -29,6 +29,7 @@ namespace SMSystem.Controllers
                 administrator.AdminName = newAdministrator.AdminName;
                 administrator.AdminEmail = newAdministrator.AdminEmail;
 
+
                 administrator.Password = EncryptPassword(newAdministrator.Password);
 
                 studentInformationDBEntities.Administrators.Add(administrator);
@@ -66,7 +67,7 @@ namespace SMSystem.Controllers
                 }
                 else
                 {
-                    ViewBag.Message = "Invalid user details.! \n Try Again!";
+                    ViewBag.Message = "Invalid user details..! \n Please Try Again..!";
                 }
             }
             return View(user);
@@ -76,7 +77,7 @@ namespace SMSystem.Controllers
         public ActionResult Logout()
         {
             Session["AdminId"] = null;
-            return RedirectToAction("AdminLogin");
+            return RedirectToAction("Dashboard", "Home");
         }
 
 

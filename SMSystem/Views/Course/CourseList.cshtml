@@ -1,7 +1,12 @@
-﻿@model IEnumerable<SMSystem.Models.Cours>
+﻿@using PagedList;
+@using PagedList.Mvc;
+
+@model IPagedList<SMSystem.Models.Cours>
+
+@*@model IEnumerable<SMSystem.Models.Cours>*@
 
 @{
-    ViewBag.Title = "Course List";
+    ViewBag.Title = "CourseList";
 }
 
 <h2>Course List</h2>
@@ -19,16 +24,20 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.CourseId)
+            @Html.DisplayName("Course Id")
+            @*@Html.DisplayNameFor(model => model.CourseId)*@
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.CourseName)
+            @Html.DisplayName("Name")
+            @*@Html.DisplayNameFor(model => model.CourseName)*@
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Duration)
+            @Html.DisplayName("Duration")
+            @*@Html.DisplayNameFor(model => model.Duration)*@
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Description)
+            @Html.DisplayName("Description")
+            @*@Html.DisplayNameFor(model => model.Description)*@
         </th>
         <th>
             @Html.DisplayName("Action")
@@ -59,3 +68,20 @@
     }
 
 </table>
+
+<div id='Paging'>
+
+    @Html.PagedListPager(Model, page => Url.Action("CourseList",
+                            new
+                                {
+                                    page,
+                                    searchby = Request.QueryString["searchby"],
+                                    search = Request.QueryString["search"]
+                                    }),
+                                    new PagedListRenderOptions()
+                                    {
+                                        Display = PagedListDisplayMode.IfNeeded,
+                                        DisplayPageCountAndCurrentLocation = true,
+                                        DisplayItemSliceAndTotal = true
+                                    })
+</div>  

@@ -17,23 +17,31 @@
         <th>
             @Html.DisplayNameFor(model => model.StatusDescription)
         </th>
-        <th></th>
     </tr>
 
-@foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.StatusCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StatusDescription)
+            </td>
+            @*<td>
+                    @Html.ActionLink("Edit", "Edit", new { id=item.StatusCode }) |
+                    @Html.ActionLink("Details", "Details", new { id=item.StatusCode }) |
+                    @Html.ActionLink("Delete", "Delete", new { id=item.StatusCode })
+                </td>*@
+        </tr>
+    }
+
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.StatusCode)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StatusDescription)
-        </td>
-        @*<td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.StatusCode }) |
-            @Html.ActionLink("Details", "Details", new { id=item.StatusCode }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.StatusCode })
-        </td>*@
+        <td></td>
+        <td></td>
     </tr>
-}
-
 </table>
+<br />
+<br />
+<br />
+<br />

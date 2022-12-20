@@ -9,22 +9,41 @@
 
 </div>
 
+<div>
+    @if (@ViewBag.loginError != null)
+    {
+        <h3 style="margin:10px; color: red; padding:10px">
+            @ViewBag.loginError
+        </h3>
+    }
+</div>
+
 <div class="row">
     <div class="col-md-4">
-        <h2></h2>
+        <h2>
+            A
+        </h2>
         <p>
-            
+            a
         </p>
         
     </div>
     <div class="col-md-4">
-        <h2></h2>
-        <p></p>
+        <h2>
+            B
+        </h2>
+        <p>
+            b
+        </p>
         
     </div>
     <div class="col-md-4">
-        <h2></h2>
-        <p></p>
+        <h2>
+            C
+        </h2>
+        <p>
+            c
+        </p>
         
     </div>
 </div>

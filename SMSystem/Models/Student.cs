@@ -12,6 +12,7 @@ namespace SMSystem.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
 
     public partial class Student
     {
@@ -39,6 +40,7 @@ namespace SMSystem.Models
         [Display(Name = "Date of birth")]
         [Required]
         [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
+        [Remote("CheckAge", "Student", ErrorMessage = "Age must be atlest 16 years.")]
         public Nullable<System.DateTime> StudentDoB { get; set; }
         public Nullable<int> StudentAge { get; set; }
 

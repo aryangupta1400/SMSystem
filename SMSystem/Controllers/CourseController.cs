@@ -1,4 +1,5 @@
-﻿using SMSystem.Models;
+﻿using PagedList;
+using SMSystem.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Migrations;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
 
 namespace SMSystem.Controllers
 {
@@ -15,62 +17,86 @@ namespace SMSystem.Controllers
 
         StudentInformationDBEntities studentInformationDBEntities = new StudentInformationDBEntities();
 
-        public ActionResult CourseList()
+        public ActionResult CourseList(int? page)
         {
-            var courses = studentInformationDBEntities.Courses.ToList();
-
-            if (TempData["errorMessage"] != null)
+            if (Session["AdminId"] != null)
             {
-                ViewBag.Message = TempData["errorMessage"];
+                var courses = studentInformationDBEntities.Courses.ToList().ToPagedList(page ?? 1, 3);
+
+                if (TempData["errorMessage"] != null)
+                {
+                    ViewBag.Message = TempData["errorMessage"];
+                }
+
+                return View(courses);
+
             }
 
-            return View(courses);
+            return RedirectToAction("LoginError", "Home");
+            
         }
 
         public ActionResult AddCourse()
         {
-            return View();
+            if (Session["AdminId"] != null)
+            {
+                return View();
+            }
+
+            return RedirectToAction("LoginError", "Home");
+            
         }
 
         [HttpPost]
         public ActionResult AddCourse(Cours newCourse)
         {
-            if (ModelState.IsValid)
+            if (Session["AdminId"] != null)
             {
-                studentInformationDBEntities.Courses.Add(newCourse);
-                studentInformationDBEntities.SaveChanges();
+                if (ModelState.IsValid)
+                {
+                    studentInformationDBEntities.Courses.Add(newCourse);
+                    studentInformationDBEntities.SaveChanges();
 
-                ModelState.Clear();
+                    ModelState.Clear();
 
-                return RedirectToAction("CourseList");
+                    return RedirectToAction("CourseList");
+                }
+
+                return View();
             }
 
-            return View();
+            return RedirectToAction("LoginError", "Home");
+            
         }
 
         public ActionResult DeleteCourse(int id)
-        {           
-            try
+        {
+            if (Session["AdminId"] != null)
             {
-                Cours course = studentInformationDBEntities.Courses.Find(id);
+                try
+                {
+                    Cours course = studentInformationDBEntities.Courses.Find(id);
 
-                studentInformationDBEntities.Courses.Remove(course);
+                    studentInformationDBEntities.Courses.Remove(course);
 
-                studentInformationDBEntities.SaveChanges();
+                    studentInformationDBEntities.SaveChanges();
 
-                //ViewBag.Message = "Students are already enrolled in the course.";
+                    //ViewBag.Message = "Students are already enrolled in the course.";
 
-            }
-            catch (Exception ex)
-            {
-                //ViewBag.Message = "Students are already enrolled in the course.";
+                }
+                catch (Exception ex)
+                {
+                    //ViewBag.Message = "Students are already enrolled in the course.";
 
-                TempData["errorMessage"] = "Students are already enrolled in the course.";
+                    TempData["errorMessage"] = "Students are already enrolled in this course.";
+
+                    return RedirectToAction("CourseList");
+                }
 
                 return RedirectToAction("CourseList");
             }
 
-            return RedirectToAction("CourseList");
+            return RedirectToAction("LoginError", "Home");            
         }
 
         /*public ActionResult DeleteCourse(Cours course)
@@ -90,36 +116,44 @@ namespace SMSystem.Controllers
 
         public ActionResult EditCourse(int? id)
         {
-            if (id == null)
+            if (Session["AdminId"] != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+
+                Cours course = studentInformationDBEntities.Courses.Find(id);
+
+                if (course == null)
+                {
+                    return HttpNotFound();
+                }
+
+                return View(course);
             }
 
-            Cours course = studentInformationDBEntities.Courses.Find(id);
-
-            if (course == null)
-            {
-                return HttpNotFound();
-            }
-
-            return View(course);
+            return RedirectToAction("LoginError", "Home");            
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult EditCourse(Cours course)
         {
-            if (ModelState.IsValid)
+            if (Session["AdminId"] != null)
             {
-                studentInformationDBEntities.Courses.AddOrUpdate(course);
+                if (ModelState.IsValid)
+                {
+                    studentInformationDBEntities.Courses.AddOrUpdate(course);
 
-                studentInformationDBEntities.SaveChanges();
+                    studentInformationDBEntities.SaveChanges();
 
-                return RedirectToAction("CourseList");
+                    return RedirectToAction("CourseList");
+                }
+                return View();
             }
 
-            return View();
+            return RedirectToAction("LoginError", "Home");            
         }
-
     }
 }

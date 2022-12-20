@@ -1,4 +1,9 @@
-﻿@model IEnumerable<SMSystem.Models.Student>
+﻿@using PagedList;
+@using PagedList.Mvc;
+
+@*@model IEnumerable<SMSystem.Models.Student>*@
+
+@model IPagedList<SMSystem.Models.Student>
 
 @{
     ViewBag.Title = "StudentList";
@@ -55,40 +60,47 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.StudentId)
+            @Html.DisplayName("Student Id")
+            @*@Html.DisplayNameFor(model => model.StudentId)*@
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.StudentName)
+            @Html.DisplayName("Name")
+            @*@Html.DisplayNameFor(model => model.StudentName)*@
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.StudentEmail)
-        </th>
-        @*<th>
-            @Html.DisplayNameFor(model => model.StudentMobile)
-        </th>*@
-        <th>
-            @Html.DisplayNameFor(model => model.Gender)
+            @Html.DisplayName("Email")
+            @*@Html.DisplayNameFor(model => model.StudentEmail)*@
         </th>
         @*<th>
-            @Html.DisplayNameFor(model => model.StudentDoB)
+                @Html.DisplayNameFor(model => model.StudentMobile)
+            </th>*@
+        <th>
+            @Html.DisplayName("Gender")
+            @*@Html.DisplayNameFor(model => model.Gender)*@
+        </th>
+        @*<th>
+                @Html.DisplayNameFor(model => model.StudentDoB)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StudentAge)
+            </th>*@
+        @*<th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>*@
+        <th>
+            @Html.DisplayName("Joining Date")
+            @*@Html.DisplayNameFor(model => model.JoiningDate)*@
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.StudentAge)
-        </th>*@
-       @*<th>
-            @Html.DisplayNameFor(model => model.Address)
-        </th>*@
-        <th>
-            @Html.DisplayNameFor(model => model.JoiningDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Cours.CourseName)
+            @Html.DisplayName("Course")
+            @*@Html.DisplayNameFor(model => model.Cours.CourseName)*@
         </th>
         @*<th>
                 @Html.DisplayNameFor(model => model.Parent.FatherName)
             </th>*@
         <th>
-            @Html.DisplayNameFor(model => model.Status.StatusDescription)
+            @Html.DisplayName("Status")
+            @*@Html.DisplayNameFor(model => model.Status.StatusDescription)*@
         </th>
         <th>
             @Html.DisplayName("Action")
@@ -120,23 +132,23 @@
                     @Html.DisplayFor(modelItem => item.StudentEmail)
                 </td>
                 @*<td>
-                    @Html.DisplayFor(modelItem => item.StudentMobile)
-                </td>*@
+                        @Html.DisplayFor(modelItem => item.StudentMobile)
+                    </td>*@
                 <td>
                     @Html.DisplayFor(modelItem => item.Gender)
                 </td>
                 @*<td>
-                    @Html.DisplayFor(modelItem => item.StudentDoB, new { @class = "", type = "date" })
-                </td>
-                <td>
-                    @{
-                        var date = DateTime.Now.Date.Subtract(item.StudentDoB.Value);
-                        @Html.DisplayFor(modelItem => item.StudentAge)
-                    }
-                </td>*@
+                        @Html.DisplayFor(modelItem => item.StudentDoB, new { @class = "", type = "date" })
+                    </td>
+                    <td>
+                        @{
+                            var date = DateTime.Now.Date.Subtract(item.StudentDoB.Value);
+                            @Html.DisplayFor(modelItem => item.StudentAge)
+                        }
+                    </td>*@
                 @*<td>
-                    @Html.DisplayFor(modelItem => item.Address)
-                </td>*@
+                        @Html.DisplayFor(modelItem => item.Address)
+                    </td>*@
                 <td>
                     @Html.DisplayFor(modelItem => item.JoiningDate, new { @class = "", type = "date" })
                 </td>
@@ -150,8 +162,8 @@
                     @Html.DisplayFor(modelItem => item.Status.StatusDescription)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "EditStudent", new { id = item.StudentId }) | 
-                    @Html.ActionLink("Profile", "StudentProfile", new { id=item.StudentId })
+                    @Html.ActionLink("Edit", "EditStudent", new { id = item.StudentId }) |
+                    @Html.ActionLink("Profile", "StudentProfile", new { id = item.StudentId })
                     @*@Html.ActionLink("Delete", "Delete", new { id=item.StudentId })*@
                 </td>
             </tr>
@@ -207,3 +219,14 @@
         }*@
 
 </table>
+
+<div id='Paging'>
+
+    @Html.PagedListPager(Model, page => Url.Action("StudentList", 
+                            new { page, searchby = Request.QueryString["searchby"], 
+                                search = Request.QueryString["search"] }), 
+                                new PagedListRenderOptions() 
+                                { Display = PagedListDisplayMode.IfNeeded, 
+                                    DisplayPageCountAndCurrentLocation = true, 
+                                    DisplayItemSliceAndTotal = true })
+</div>  
