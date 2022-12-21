@@ -11,12 +11,33 @@ namespace SMSystem.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
+
     public partial class Administrator
     {
         public int AdminId { get; set; }
+
+        [Display(Name = "Name")]
+        [Required(ErrorMessage = "Requried")]
         public string AdminName { get; set; }
+
+        [Display(Name = "Email")]
+        [Required(ErrorMessage = "Requried")]
+        [EmailAddress]
+        [RegularExpression(("^[a-zA-Z0-9_\\.-]+@([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$"), ErrorMessage = "Enter valid Email-ID")]
+        [Remote("doesAdminExist", "Admin", ErrorMessage = "Admin already exist. Try to Login.")]
         public string AdminEmail { get; set; }
+
+        [Display(Name = "Password")]
+        [Required(ErrorMessage = "Requried")]
+        [MinLength(6)]
+        [DataType(DataType.Password)]
+        [RegularExpression(("[^ ]+$"), ErrorMessage = "Space is not allowed")]
+        [PasswordPropertyText]
         public string Password { get; set; }
+
+        public bool IsActive { get; set; }
     }
 }

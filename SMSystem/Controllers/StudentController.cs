@@ -28,6 +28,8 @@ namespace SMSystem.Controllers
                 SelectListItem[] courseName = GetCourseList();
 
                 SelectListItem[] status = GetStatusList();
+
+                return View();
                                 
             }
 
@@ -45,7 +47,7 @@ namespace SMSystem.Controllers
 
                 SelectListItem[] status = GetStatusList();
 
-                ViewBag.ageError = null;
+                
 
                 if (ModelState.IsValid)
                 {
@@ -86,6 +88,8 @@ namespace SMSystem.Controllers
 
                     return RedirectToAction("StudentList");
                 }
+
+                return View();
             }
 
             return RedirectToAction("LoginError", "Home");
@@ -163,7 +167,7 @@ namespace SMSystem.Controllers
             if (Session["AdminId"] != null)
             {
                 if (ModelState.IsValid)
-                {
+                { 
                     student.StudentAge = CalculateAge((DateTime)student.StudentDoB);
 
                     studentInformationDBEntities.Entry(student).State = EntityState.Modified;

@@ -21,11 +21,13 @@ namespace SMSystem.Models
         [Display(Name = "Student Email")]
         [Required]
         [EmailAddress]
+        [RegularExpression(("^[a-zA-Z0-9_\\.-]+@([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$"), ErrorMessage = "Enter valid Email-ID")]
         public string StudentEmail { get; set; }
 
         [Display(Name = "Student Phone no.")]
         [MinLength(10)]
         [MaxLength(10)]
+        [RegularExpression(("[^ ]+$"), ErrorMessage = "Space is not Allow")]
         public string StudentMobile { get; set; }
 
         [Display(Name = "Gender")]

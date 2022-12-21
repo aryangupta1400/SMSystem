@@ -20,6 +20,7 @@ namespace SMSystem.Models
         [Display(Name = "Email")]
         [Required(ErrorMessage = "Requried")]
         [EmailAddress]
+        [RegularExpression(("^[a-zA-Z0-9_\\.-]+@([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$"), ErrorMessage = "Enter valid Email-ID")]
         [Remote("doesAdminExist", "Admin", ErrorMessage = "Admin already exist. Try to Login.")]        
         public string AdminEmail { get; set; }
 
@@ -27,6 +28,7 @@ namespace SMSystem.Models
         [Required(ErrorMessage = "Requried")]
         [MinLength(6)]
         [DataType(DataType.Password)]
+        [RegularExpression(("[^ ]+$"), ErrorMessage = "Space is not allowed")]
         [PasswordPropertyText]
         public string Password { get; set; }
 
@@ -36,5 +38,6 @@ namespace SMSystem.Models
         [Compare("Password", ErrorMessage = "Password does not match.")]
         public string ConfirmPassword { get; set; }
 
+        public bool IsActive { get; set; }
     }
 }

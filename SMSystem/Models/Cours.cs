@@ -20,7 +20,7 @@ namespace SMSystem.Models
         {
             this.Students = new HashSet<Student>();
         }
-
+    
         public int CourseId { get; set; }
 
         [Display(Name = "Course Name")]
@@ -35,6 +35,8 @@ namespace SMSystem.Models
         [Required]
         public string Description { get; set; }
 
+        public bool IsValid { get; set; }
+    
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Student> Students { get; set; }
     }

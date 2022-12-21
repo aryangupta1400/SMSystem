@@ -54,7 +54,17 @@ namespace SMSystem.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    studentInformationDBEntities.Courses.Add(newCourse);
+                    Cours cours = new Cours();
+
+                    cours.CourseId = newCourse.CourseId;
+                    cours.CourseName = newCourse.CourseName;
+                    cours.Duration = newCourse.Duration;
+                    cours.Description = newCourse.Description;
+                    cours.IsValid = true;
+
+                    //var temp = studentInformationDBEntities.Courses.Add(cours);
+
+                    studentInformationDBEntities.Courses.Add(cours);
                     studentInformationDBEntities.SaveChanges();
 
                     ModelState.Clear();
@@ -77,9 +87,20 @@ namespace SMSystem.Controllers
                 {
                     Cours course = studentInformationDBEntities.Courses.Find(id);
 
-                    studentInformationDBEntities.Courses.Remove(course);
+                    var student = studentInformationDBEntities.Students.Where(s => s.CourseId == course.CourseId).ToList();
 
-                    studentInformationDBEntities.SaveChanges();
+                    if (student.Count == 0)
+                    {
+                        course.IsValid = false;
+
+                        studentInformationDBEntities.SaveChanges();
+                    }
+                    else
+                    {
+                        TempData["errorMessage"] = "Students are already enrolled in this course.";
+                    }
+
+                    return RedirectToAction("CourseList");
 
                     //ViewBag.Message = "Students are already enrolled in the course.";
 

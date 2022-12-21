@@ -13,6 +13,7 @@
           <Property Name="AdminName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="AdminEmail" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Courses">
           <Key>
@@ -22,6 +23,7 @@
           <Property Name="CourseName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Duration" Type="int" Nullable="false" />
           <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="IsValid" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Parents">
           <Key>
@@ -59,7 +61,6 @@
           <Property Name="CourseId" Type="int" Nullable="false" />
           <Property Name="JoiningDate" Type="date" />
           <Property Name="StatusCode" Type="int" />
-          <Property Name="ParentId" Type="int" />
         </EntityType>
         <Association Name="FK_Students_Courses">
           <End Role="Courses" Type="Self.Courses" Multiplicity="1" />
@@ -70,18 +71,6 @@
             </Principal>
             <Dependent Role="Students">
               <PropertyRef Name="CourseId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Students_Parents">
-          <End Role="Parents" Type="Self.Parents" Multiplicity="0..1" />
-          <End Role="Students" Type="Self.Students" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Parents">
-              <PropertyRef Name="ParentId" />
-            </Principal>
-            <Dependent Role="Students">
-              <PropertyRef Name="ParentId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -107,10 +96,6 @@
             <End Role="Courses" EntitySet="Courses" />
             <End Role="Students" EntitySet="Students" />
           </AssociationSet>
-          <AssociationSet Name="FK_Students_Parents" Association="Self.FK_Students_Parents">
-            <End Role="Parents" EntitySet="Parents" />
-            <End Role="Students" EntitySet="Students" />
-          </AssociationSet>
           <AssociationSet Name="FK_Students_Status" Association="Self.FK_Students_Status">
             <End Role="Status" EntitySet="Status" />
             <End Role="Students" EntitySet="Students" />
@@ -128,6 +113,7 @@
           <Property Name="AdminName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="AdminEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Cours">
           <Key>
@@ -138,6 +124,7 @@
           <Property Name="Duration" Type="Int32" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Students" Relationship="Self.FK_Students_Courses" FromRole="Courses" ToRole="Students" />
+          <Property Name="IsValid" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Parent">
           <Key>
@@ -152,7 +139,6 @@
           <Property Name="MotherMobile" Type="Int32" />
           <Property Name="MotherOccupation" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="FatherOccupation" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Students" Relationship="Self.FK_Students_Parents" FromRole="Parents" ToRole="Students" />
         </EntityType>
         <EntityType Name="Status">
           <Key>
@@ -177,9 +163,7 @@
           <Property Name="CourseId" Type="Int32" Nullable="false" />
           <Property Name="JoiningDate" Type="DateTime" Precision="0" />
           <Property Name="StatusCode" Type="Int32" />
-          <Property Name="ParentId" Type="Int32" />
           <NavigationProperty Name="Cours" Relationship="Self.FK_Students_Courses" FromRole="Students" ToRole="Courses" />
-          <NavigationProperty Name="Parent" Relationship="Self.FK_Students_Parents" FromRole="Students" ToRole="Parents" />
           <NavigationProperty Name="Status" Relationship="Self.FK_Students_Status" FromRole="Students" ToRole="Status" />
         </EntityType>
         <Association Name="FK_Students_Courses">
@@ -191,18 +175,6 @@
             </Principal>
             <Dependent Role="Students">
               <PropertyRef Name="CourseId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Students_Parents">
-          <End Role="Parents" Type="Self.Parent" Multiplicity="0..1" />
-          <End Role="Students" Type="Self.Student" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Parents">
-              <PropertyRef Name="ParentId" />
-            </Principal>
-            <Dependent Role="Students">
-              <PropertyRef Name="ParentId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -228,10 +200,6 @@
             <End Role="Courses" EntitySet="Courses" />
             <End Role="Students" EntitySet="Students" />
           </AssociationSet>
-          <AssociationSet Name="FK_Students_Parents" Association="Self.FK_Students_Parents">
-            <End Role="Parents" EntitySet="Parents" />
-            <End Role="Students" EntitySet="Students" />
-          </AssociationSet>
           <AssociationSet Name="FK_Students_Status" Association="Self.FK_Students_Status">
             <End Role="Status" EntitySet="Status" />
             <End Role="Students" EntitySet="Students" />
@@ -246,6 +214,7 @@
           <EntitySetMapping Name="Administrators">
             <EntityTypeMapping TypeName="StudentInformationDBModel.Administrator">
               <MappingFragment StoreEntitySet="Administrator">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="AdminId" ColumnName="AdminId" />
                 <ScalarProperty Name="AdminName" ColumnName="AdminName" />
                 <ScalarProperty Name="AdminEmail" ColumnName="AdminEmail" />
@@ -256,6 +225,7 @@
           <EntitySetMapping Name="Courses">
             <EntityTypeMapping TypeName="StudentInformationDBModel.Cours">
               <MappingFragment StoreEntitySet="Courses">
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
                 <ScalarProperty Name="CourseId" ColumnName="CourseId" />
                 <ScalarProperty Name="CourseName" ColumnName="CourseName" />
                 <ScalarProperty Name="Duration" ColumnName="Duration" />
@@ -300,7 +270,6 @@
                 <ScalarProperty Name="CourseId" ColumnName="CourseId" />
                 <ScalarProperty Name="JoiningDate" ColumnName="JoiningDate" />
                 <ScalarProperty Name="StatusCode" ColumnName="StatusCode" />
-                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

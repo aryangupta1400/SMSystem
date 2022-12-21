@@ -14,12 +14,6 @@ namespace SMSystem.Models
     
     public partial class Parent
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Parent()
-        {
-            this.Students = new HashSet<Student>();
-        }
-    
         public int ParentId { get; set; }
         public string FatherName { get; set; }
         public string FatherEmail { get; set; }
@@ -29,8 +23,5 @@ namespace SMSystem.Models
         public Nullable<int> MotherMobile { get; set; }
         public string MotherOccupation { get; set; }
         public string FatherOccupation { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Student> Students { get; set; }
     }
 }

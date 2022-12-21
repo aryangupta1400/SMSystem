@@ -21,5 +21,7 @@ namespace SMSystem.Models
         [Display(Name = "Description")]
         [Required]
         public string Description { get; set; }
+
+        public bool IsValid { get; set; }
     }
 }

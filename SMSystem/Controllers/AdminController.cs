@@ -1,6 +1,7 @@
 ﻿using SMSystem.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -49,6 +50,8 @@ namespace SMSystem.Controllers
             return View();
         }*/
 
+        //int adminId = 0;
+
         public ActionResult AdminLogin(LoginModel user)
         {
             Session.Clear();
@@ -63,6 +66,17 @@ namespace SMSystem.Controllers
                     Session["AdminId"] = admin.AdminId.ToString();
                     Session["AdminName"] = admin.AdminName.ToString();
 
+                    if(admin.IsActive == false)
+                    {
+                        admin.IsActive = true;
+
+                        TempData["adminId"] = admin.AdminId;
+
+                        studentInformationDBEntities.SaveChanges();
+                    }                    
+
+                    //studentInformationDBEntities.Administrators.AddOrUpdate()
+
                     return RedirectToAction("StudentList", "Student");
                 }
                 else
@@ -76,6 +90,16 @@ namespace SMSystem.Controllers
 
         public ActionResult Logout()
         {
+            var admin = studentInformationDBEntities.Administrators.ToList()
+                            .Where(a => a.AdminId.Equals(TempData["adminId"])).FirstOrDefault();
+
+            if(TempData["adminId"] != null)
+            {
+                admin.IsActive = false;
+                                
+                studentInformationDBEntities.SaveChanges(); 
+            } 
+
             Session["AdminId"] = null;
             return RedirectToAction("Dashboard", "Home");
         }

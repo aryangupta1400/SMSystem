@@ -4,14 +4,13 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="bd6360e2ea234c9e817e87a2f2377d95" Name="Diagram1" ZoomLevel="98">
+      <Diagram DiagramId="bd6360e2ea234c9e817e87a2f2377d95" Name="Diagram1" ZoomLevel="84">
         <EntityTypeShape EntityType="StudentInformationDBModel.Administrator" Width="1.5" PointX="5.5" PointY="2" IsExpanded="true" />
         <EntityTypeShape EntityType="StudentInformationDBModel.Cours" Width="1.5" PointX="0.625" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="StudentInformationDBModel.Parent" Width="1.5" PointX="3" PointY="7.125" IsExpanded="true" />
         <EntityTypeShape EntityType="StudentInformationDBModel.Status" Width="1.5" PointX="0.625" PointY="3.375" IsExpanded="true" />
         <EntityTypeShape EntityType="StudentInformationDBModel.Student" Width="1.5" PointX="3" PointY="1.25" IsExpanded="true" />
         <AssociationConnector Association="StudentInformationDBModel.FK_Students_Courses" ManuallyRouted="false" />
-        <AssociationConnector Association="StudentInformationDBModel.FK_Students_Parents" ManuallyRouted="false" />
         <AssociationConnector Association="StudentInformationDBModel.FK_Students_Status" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>

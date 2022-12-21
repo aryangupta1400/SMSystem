@@ -26,11 +26,13 @@ namespace SMSystem.Models
         [Display(Name = "Student Email")]
         [Required]
         [EmailAddress]
+        [RegularExpression(("^[a-zA-Z0-9_\\.-]+@([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$"), ErrorMessage = "Enter valid Email-ID")]
         public string StudentEmail { get; set; }
 
         [Display(Name = "Student Phone no.")]
         [MinLength(10)]
         [MaxLength(10)]
+        [RegularExpression(("[^ ]+$"), ErrorMessage = "Space is not Allow")]
         public string StudentMobile { get; set; }
 
         [Display(Name = "Gender")]
@@ -39,9 +41,10 @@ namespace SMSystem.Models
 
         [Display(Name = "Date of birth")]
         [Required]
-        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         [Remote("CheckAge", "Student", ErrorMessage = "Age must be atlest 16 years.")]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> StudentDoB { get; set; }
+
         public Nullable<int> StudentAge { get; set; }
 
         [Display(Name = "Address")]
@@ -60,10 +63,9 @@ namespace SMSystem.Models
         [Display(Name = "Current Status")]
         [Required]
         public Nullable<int> StatusCode { get; set; }
-        public Nullable<int> ParentId { get; set; }
     
         public virtual Cours Cours { get; set; }
-        public virtual Parent Parent { get; set; }
+
         public virtual Status Status { get; set; }
     }
 }
