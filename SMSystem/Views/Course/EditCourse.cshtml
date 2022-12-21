@@ -55,7 +55,7 @@
                     <label class="switch">
                         @*@Html.CheckBoxFor(model => model.IsValid, new { htmlAttributes = new { @class = "form-control", data-val="true" } })*@
 
-                        <input checked=@(Model.IsValid != false) data-val="true" name="IsValid" type="checkbox" value="true">
+                        <input checked=@(Model.IsValid != false) data-val="true" style="cursor: pointer" name="IsValid" type="checkbox" value="true">
 
                         <span class="slider round"></span>
                         @Html.ValidationMessageFor(model => model.IsValid, "", new { @class = "text-danger" })

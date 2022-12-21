@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SMSystem.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -27,7 +28,32 @@ namespace SMSystem.Controllers
             return View();
         }
 
+        StudentInformationDBEntities studentInformationDBEntities = new StudentInformationDBEntities();
+
         public ActionResult Dashboard()
+        {
+            var activeUser = studentInformationDBEntities.Administrators.Where(a => a.IsActive == true).ToList();
+
+            if(activeUser.Count == 0)
+            {
+                return View();
+            }
+            else
+            {
+                for(int i = 0; i < activeUser.Count; i++)
+                {
+                    Administrator administrator = studentInformationDBEntities.Administrators.Find(activeUser[i].AdminId);
+
+                    administrator.IsActive = false;
+
+                    studentInformationDBEntities.SaveChanges();
+                }                
+            }
+
+            return View();
+        }
+
+        public ActionResult WelcomeScreen()
         {
             return View();
         }

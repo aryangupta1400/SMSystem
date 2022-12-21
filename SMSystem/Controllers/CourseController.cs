@@ -1,4 +1,5 @@
-﻿using PagedList;
+﻿using NLog;
+using PagedList;
 using SMSystem.Models;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,8 @@ namespace SMSystem.Controllers
     public class CourseController : Controller
     {
         // GET: Course
+
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         StudentInformationDBEntities studentInformationDBEntities = new StudentInformationDBEntities();
 
@@ -32,6 +35,8 @@ namespace SMSystem.Controllers
 
             }
 
+            logger.Error("Login Error --> Trying to access functional page without Login.");
+
             return RedirectToAction("LoginError", "Home");
             
         }
@@ -42,6 +47,8 @@ namespace SMSystem.Controllers
             {
                 return View();
             }
+
+            logger.Error("Login Error --> Trying to access functional page without Login.");
 
             return RedirectToAction("LoginError", "Home");
             
@@ -74,6 +81,8 @@ namespace SMSystem.Controllers
 
                 return View();
             }
+
+            logger.Error("Login Error --> Trying to access functional page without Login.");
 
             return RedirectToAction("LoginError", "Home");
             
@@ -113,9 +122,9 @@ namespace SMSystem.Controllers
 
                     return RedirectToAction("CourseList");
                 }
-
-                return RedirectToAction("CourseList");
             }
+
+            logger.Error("Login Error --> Trying to access functional page without Login.");
 
             return RedirectToAction("LoginError", "Home");            
         }
@@ -154,6 +163,8 @@ namespace SMSystem.Controllers
                 return View(course);
             }
 
+            logger.Error("Login Error --> Trying to access functional page without Login.");
+
             return RedirectToAction("LoginError", "Home");            
         }
 
@@ -173,6 +184,8 @@ namespace SMSystem.Controllers
                 }
                 return View();
             }
+
+            logger.Error("Login Error --> Trying to access functional page without Login.");
 
             return RedirectToAction("LoginError", "Home");            
         }

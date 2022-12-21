@@ -16,7 +16,16 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("SMS", "Dashboard", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @if (Session["AdminId"] == null)
+                {
+                    @Html.ActionLink("SMS", "Dashboard", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                }
+
+                @if (Session["AdminId"] != null)
+                {
+                    @Html.ActionLink("SMS", "WelcomeScreen", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                }
+
             </div>
 
             <div class="navbar-collapse collapse">

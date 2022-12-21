@@ -74,7 +74,7 @@
             <td>
                 @*@Html.DisplayFor(modelItem => item.IsValid, new {  })*@
                 <label class="switch">
-                    <input checked=@(item.IsValid != false) data-val="true" name="IsValid" type="checkbox" value="true" onclick="return false">
+                    <input checked=@(item.IsValid != false) data-val="true" name="IsValid" style="cursor:not-allowed" type="checkbox" value="true" onclick="return false">
 
                     <span class="slider round"></span>
                 </label>

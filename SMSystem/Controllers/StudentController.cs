@@ -1,4 +1,5 @@
-﻿using PagedList;
+﻿using NLog;
+using PagedList;
 using PagedList.Mvc;
 using SMSystem.Models;
 using System;
@@ -19,6 +20,8 @@ namespace SMSystem.Controllers
     {
         // GET: Student
 
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
+
         StudentInformationDBEntities studentInformationDBEntities = new StudentInformationDBEntities();
 
         public ActionResult StudentRegistration()
@@ -32,6 +35,8 @@ namespace SMSystem.Controllers
                 return View();
                                 
             }
+
+            logger.Error("Login Error --> Trying to access functional page without Login.");
 
             return RedirectToAction("LoginError", "Home");
 
@@ -92,6 +97,8 @@ namespace SMSystem.Controllers
                 return View();
             }
 
+            logger.Error("Login Error --> Trying to access functional page without Login.");
+
             return RedirectToAction("LoginError", "Home");
 
         }
@@ -104,6 +111,8 @@ namespace SMSystem.Controllers
                                 
                 return View(students);
             }
+
+            logger.Error("Login Error --> Trying to access functional page without Login.");
 
             return RedirectToAction("LoginError", "Home");
         }
@@ -155,6 +164,8 @@ namespace SMSystem.Controllers
 
             }
 
+            logger.Error("Login Error --> Trying to access functional page without Login.");
+
             return RedirectToAction("LoginError", "Home");
 
             
@@ -180,6 +191,8 @@ namespace SMSystem.Controllers
                 return View();
             }
 
+            logger.Error("Login Error --> Trying to access functional page without Login.");
+
             return RedirectToAction("LoginError", "Home");                                    
         }
 
@@ -204,6 +217,9 @@ namespace SMSystem.Controllers
                     {
                         ViewBag.Message = "Please enter numeric values only..!";
                         var model = studentInformationDBEntities.Students.Where(s => s.StudentId == 0).ToList().ToPagedList(page ?? 1, 3); ;
+
+                        logger.Error(ex, "Alphabets entered insed of numeric value.");
+
                         return View(model);
                     }
                 }
@@ -219,6 +235,9 @@ namespace SMSystem.Controllers
                     {
                         ViewBag.Message = "Please enter alphabets only..!";
                         var model = studentInformationDBEntities.Students.Where(s => s.StudentId == 0).ToList().ToPagedList(page ?? 1, 3); ;
+
+                        logger.Error(ex, "Numeric value entered insed of alphabets.");
+
                         return View(model);
                     }
 
@@ -234,6 +253,9 @@ namespace SMSystem.Controllers
                     {
                         ViewBag.Message = "Please enter alphabets only..!";
                         var model = studentInformationDBEntities.Students.Where(s => s.StudentId == 0).ToList().ToPagedList(page ?? 1, 3); ;
+
+                        logger.Error(ex, "Numeric value entered insed of alphabets.");
+
                         return View(model);
                     }
 
@@ -249,6 +271,9 @@ namespace SMSystem.Controllers
                     {
                         ViewBag.Message = "Please enter alphabets only..!";
                         var model = studentInformationDBEntities.Students.Where(s => s.StudentId == 0).ToList().ToPagedList(page ?? 1, 3); ;
+
+                        logger.Error(ex, "Numeric value entered insed of alphabets.");
+
                         return View(model);
                     }
 
@@ -269,6 +294,9 @@ namespace SMSystem.Controllers
                     {
                         ViewBag.Message = "Please enter alphabets only..!";
                         var model = studentInformationDBEntities.Students.Where(s => s.StudentId == 0).ToList().ToPagedList(page ?? 1, 3); ;
+
+                        logger.Error(ex, "Invalid course name entered.");
+
                         return View(model);
                     }
 
@@ -289,6 +317,9 @@ namespace SMSystem.Controllers
                     {
                         ViewBag.Message = "Please enter alphabets only..!";
                         var model = studentInformationDBEntities.Students.Where(s => s.StudentId == 0).ToList().ToPagedList(page ?? 1, 3); ;
+
+                        logger.Error(ex, "Invalid status entered.");
+
                         return View(model);
                     }
 
@@ -296,6 +327,8 @@ namespace SMSystem.Controllers
 
                 return RedirectToAction("StudentList");
             }
+
+            logger.Error("Login Error --> Trying to access functional page without Login.");
 
             return RedirectToAction("LoginError", "Home");
             
@@ -309,6 +342,8 @@ namespace SMSystem.Controllers
 
                 return View(student);
             }
+
+            logger.Error("Login Error --> Trying to access functional page without Login.");
 
             return RedirectToAction("LoginError", "Home");
             
@@ -357,7 +392,7 @@ namespace SMSystem.Controllers
 
         protected SelectListItem[] GetCourseList()
         {
-            var names = studentInformationDBEntities.Courses.Select(n => new SelectListItem()
+            var names = studentInformationDBEntities.Courses.Where(c => c.IsValid == true).Select(n => new SelectListItem()
             {
                 Text = n.CourseName,
                 Value = n.CourseId.ToString()
@@ -416,6 +451,5 @@ namespace SMSystem.Controllers
             }
         }
     }
-
 }
 

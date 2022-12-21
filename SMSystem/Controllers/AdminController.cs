@@ -1,4 +1,5 @@
-﻿using SMSystem.Models;
+﻿using NLog;
+using SMSystem.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Migrations;
@@ -9,22 +10,29 @@ using System.Web.Mvc;
 
 namespace SMSystem.Controllers
 {
+    //AdminController for basic admin related methods
     public class AdminController : Controller
     {
-        // GET: Admin
+        // logger object to log any anomalyies in logFile
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
+        //database object
         StudentInformationDBEntities studentInformationDBEntities = new StudentInformationDBEntities();
 
+        // method to register a new admin
         public ActionResult AdminRegistration()
         {
             return View();
         }
 
+        // method to register a new admin and store details in DB
         [HttpPost]
         public ActionResult AdminRegistration(AdminModel newAdministrator)
         {
             if (ModelState.IsValid)
             {
+                #region Storing admin details to DB
+
                 Administrator administrator = new Administrator();
 
                 administrator.AdminName = newAdministrator.AdminName;
@@ -36,6 +44,8 @@ namespace SMSystem.Controllers
                 studentInformationDBEntities.Administrators.Add(administrator);
 
                 studentInformationDBEntities.SaveChanges();
+
+                #endregion
 
                 ModelState.Clear();
 
@@ -50,18 +60,21 @@ namespace SMSystem.Controllers
             return View();
         }*/
 
-        //int adminId = 0;
+        
 
+        // method for admin to Login and access the portal.
         public ActionResult AdminLogin(LoginModel user)
         {
             Session.Clear();
 
             if (ModelState.IsValid)
             {
+                // variable to store valid admin details
                 var admin = studentInformationDBEntities.Administrators.ToList()
                             .Where(a => a.AdminEmail.Equals(user.AdminEmail)).FirstOrDefault();
 
-                if(admin != null && (DecryptPassword(admin.Password) == user.Password))
+                #region Authenticating the admin
+                if (admin != null && (DecryptPassword(admin.Password) == user.Password))
                 {
                     Session["AdminId"] = admin.AdminId.ToString();
                     Session["AdminName"] = admin.AdminName.ToString();
@@ -73,27 +86,30 @@ namespace SMSystem.Controllers
                         TempData["adminId"] = admin.AdminId;
 
                         studentInformationDBEntities.SaveChanges();
-                    }                    
-
+                    }
+                    #endregion
                     //studentInformationDBEntities.Administrators.AddOrUpdate()
 
-                    return RedirectToAction("StudentList", "Student");
+                    return RedirectToAction("WelcomeScreen", "Home");
                 }
                 else
                 {
+                    logger.Error("Access Denied to invalid user.");
+                    
                     ViewBag.Message = "Invalid user details..! \n Please Try Again..!";
                 }
             }
             return View(user);
         }
 
-
+        // method which will allow theu ser to logout.
         public ActionResult Logout()
         {
             var admin = studentInformationDBEntities.Administrators.ToList()
                             .Where(a => a.AdminId.Equals(TempData["adminId"])).FirstOrDefault();
 
-            if(TempData["adminId"] != null)
+            #region clearing the session after user logs-out
+            if (TempData["adminId"] != null)
             {
                 admin.IsActive = false;
                                 
@@ -101,15 +117,17 @@ namespace SMSystem.Controllers
             } 
 
             Session["AdminId"] = null;
+            #endregion
             return RedirectToAction("Dashboard", "Home");
         }
 
-
+        // jason result used as validation to validate only unique admins
         public JsonResult doesAdminExist(string AdminEmail)
         {
             return Json(!studentInformationDBEntities.Administrators.Any(x => x.AdminEmail == AdminEmail), JsonRequestBehavior.AllowGet);
         }
 
+        // method to encrypt password.
         private string EncryptPassword(string password)
         {
             StringBuilder encryptedPassword = new StringBuilder(password);
@@ -127,6 +145,7 @@ namespace SMSystem.Controllers
             return encryptedPassword.ToString();
         }
 
+        // method to decrypt password
         private string DecryptPassword(string password)
         {
             StringBuilder encryptedPassword = new StringBuilder(password);
@@ -146,4 +165,3 @@ namespace SMSystem.Controllers
 
     }
 }
-
