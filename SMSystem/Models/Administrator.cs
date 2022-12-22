@@ -17,6 +17,7 @@ namespace SMSystem.Models
 
     public partial class Administrator
     {
+        [Display(Name = "Admin Id")]
         public int AdminId { get; set; }
 
         [Display(Name = "Name")]

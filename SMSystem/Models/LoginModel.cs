@@ -10,7 +10,10 @@ using System.Xml.Linq;
 namespace SMSystem.Models
 {
     public class LoginModel
-    {        
+    {
+        [Display(Name = "Admin Id")]
+        public int AdminId { get; set; }
+
         [Display(Name = "Email")]
         [Required(ErrorMessage = "Requried")]
         [EmailAddress]

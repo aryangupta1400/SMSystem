@@ -4,59 +4,94 @@
     ViewBag.Title = "AdminLogin";
 }
 
-<h2>Login</h2>
-
-<style>
-    .error {
-        color: red
-    }
-</style>
-
-@section scripts{
-    @Scripts.Render("~/bundles/jqueryval");
+@using System.Configuration;
+@{
+    ViewBag.Title = "AdminLogin";
+    string _googlesitekey = ConfigurationManager.AppSettings["6Ldh75wjAAAAAPqVUmDRSuuWaRbcYJBNzMguDDVO"];
 }
 
-<head>
-    <script type="text/javascript">
-        function preventBack() { window.history.forward(); }
-        setTimeout("preventBack()", 0);
-        window.onunload = function () { null };
-    </script>
-</head>
 
 
-@using (Html.BeginForm("AdminLogin", "Admin", FormMethod.Post))
-{
-    @Html.AntiForgeryToken()
+<body style="background-image: url(../../Images/SMSbg.svg); background-position-x: right; overflow:clip; background-position-y: bottom; background-attachment: fixed; background-repeat: no-repeat;">
 
-    if (@ViewBag.Message != null)
+    <h2>Login</h2>
+
+    <style>
+        .error {
+            color: red
+        }
+    </style>
+
+
+
+    <head>
+        <script type="text/javascript">
+            function preventBack() { window.history.forward(); }
+            setTimeout("preventBack()", 0);
+            window.onunload = function () { null };
+        </script>
+    </head>
+
+
+    @using (Html.BeginForm("AdminLogin", "Admin", FormMethod.Post))
     {
-        <h3 style="margin:10px; color: red; padding:10px">
-            @ViewBag.Message
-        </h3>
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <br />
+
+            @if (@ViewBag.Message != null)
+            {
+                <h3 style="margin:10px; color: red; padding:10px">
+                    @ViewBag.Message
+                </h3>
+            }
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.AdminEmail, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.AdminEmail, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.AdminEmail, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    @Html.ActionLink("Forgot Password?", "ForgetPassword")
+                </div>
+            </div>
+
+
+            <div class="g-recaptcha" style="margin-left: -191px;" data-sitekey=@_googlesitekey></div>
+
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Login" class="btn btn-default" />
+                </div>
+            </div>
+
+
+        </div>
+
     }
 
     <div>
-        @Html.LabelFor(l => l.AdminEmail, new { @class = "", placeholder = "Enter your registered email-id" })
-        <div>
-            @Html.TextBoxFor(d => d.AdminEmail)
-            @Html.ValidationMessageFor(m => m.AdminEmail, "", new { @class = "error" })
-        </div>
+        @Html.ActionLink("Not an existing Admin?", "AdminRegistration")
     </div>
 
-    <br />
-
-    <div>
-        @Html.LabelFor(l => l.Password, new { @class = "", placeholder = "Enter your password." })
-        <div>
-            @Html.PasswordFor(d => d.Password)
-            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "error" })
-        </div>
-    </div>
-
-
-    <br />
-    <br />
-
-    <button type="submit">Login</button>
+</body>
+@section Scripts{
+    @Scripts.Render("~/bundles/jqueryval");
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 }

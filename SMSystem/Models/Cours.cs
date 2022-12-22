@@ -35,6 +35,7 @@ namespace SMSystem.Models
         [Required]
         public string Description { get; set; }
 
+        /*[Display(Name = "Is Active?")]*/
         public bool IsValid { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
