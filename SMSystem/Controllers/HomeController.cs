@@ -9,11 +9,13 @@ namespace SMSystem.Controllers
 {
     public class HomeController : Controller
     {
+        // index method [NOT PART OF PROJECT]
         public ActionResult Index()
         {
             return View();
         }
 
+        // About page [NOT PART OF PROJECT]
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
@@ -21,6 +23,7 @@ namespace SMSystem.Controllers
             return View();
         }
 
+        // contact page [NOT PART OF PROJECT]
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
@@ -28,8 +31,10 @@ namespace SMSystem.Controllers
             return View();
         }
 
+        // object to access DB
         StudentInformationDBEntities studentInformationDBEntities = new StudentInformationDBEntities();
 
+        // Dashboard page 
         public ActionResult Dashboard()
         {
             var activeUser = studentInformationDBEntities.Administrators.Where(a => a.IsActive == true).ToList();
@@ -40,24 +45,28 @@ namespace SMSystem.Controllers
             }
             else
             {
-                for(int i = 0; i < activeUser.Count; i++)
+                #region admin status update
+                for (int i = 0; i < activeUser.Count; i++)
                 {
                     Administrator administrator = studentInformationDBEntities.Administrators.Find(activeUser[i].AdminId);
 
                     administrator.IsActive = false;
 
                     studentInformationDBEntities.SaveChanges();
-                }                
+                }
+                #endregion
             }
 
             return View();
         }
-
+        
+        // welcome method 
         public ActionResult WelcomeScreen()
         {
             return View();
         }
 
+        // login error 
         public ActionResult LoginError()
         {
             return View();
