@@ -154,7 +154,9 @@ namespace SMSystem.Controllers
             {
                 // function to send email if valid user
                 SendEmail(AdminEmail);
-                ViewBag.Message = "Your password has been sent to your Email-Id.";
+                ViewBag.Message1 = "Your password has been sent to your Email-Id.";
+
+                ModelState.Clear();
             }
             else
             {

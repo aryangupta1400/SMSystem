@@ -4,45 +4,46 @@
     ViewBag.Title = "StatusList";
 }
 
-<body style="background-image: url(../../Images/SMSbg30.png); background-position-x: center; background-size:contain; overflow:clip; background-position-y: center; background-attachment: fixed; background-repeat: no-repeat;">
+@*<body style="background-image: url(../../Images/SMSbg30.png); background-position-x: center; background-size:contain; overflow:clip; background-position-y: center; background-attachment: fixed; background-repeat: no-repeat;">
+*@
 
+<h2>Status List</h2>
 
-    <h2>Status List</h2>
+<p>
+    @*@Html.ActionLink("Add New Status", "Create")*@
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.StatusCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StatusDescription)
+        </th>
+    </tr>
 
-    <p>
-        @*@Html.ActionLink("Add New Status", "Create")*@
-    </p>
-    <table class="table">
+    @foreach (var item in Model)
+    {
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.StatusCode)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StatusDescription)
-            </th>
+            <td>
+                @Html.DisplayFor(modelItem => item.StatusCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StatusDescription)
+            </td>
+            @*<td>
+                    @Html.ActionLink("Edit", "Edit", new { id=item.StatusCode }) |
+                    @Html.ActionLink("Details", "Details", new { id=item.StatusCode }) |
+                    @Html.ActionLink("Delete", "Delete", new { id=item.StatusCode })
+                </td>*@
         </tr>
+    }
 
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    <b>@Html.DisplayFor(modelItem => item.StatusCode)</b>
-                </td>
-                <td>
-                    <b>@Html.DisplayFor(modelItem => item.StatusDescription)</b>
-                </td>
-                @*<td>
-                        @Html.ActionLink("Edit", "Edit", new { id=item.StatusCode }) |
-                        @Html.ActionLink("Details", "Details", new { id=item.StatusCode }) |
-                        @Html.ActionLink("Delete", "Delete", new { id=item.StatusCode })
-                    </td>*@
-            </tr>
-        }
+    <tr>
+        <td></td>
+        <td></td>
+    </tr>
+</table>
 
-        <tr>
-            <td></td>
-            <td></td>
-        </tr>
-    </table>
-
-</body>
+@*</body>
+*@

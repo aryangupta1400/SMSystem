@@ -27,7 +27,7 @@ namespace SMSystem.Controllers
             if (Session["AdminId"] != null)
             {
                 // storing the values from DB to a paged list
-                var courses = studentInformationDBEntities.Courses.ToList().ToPagedList(page ?? 1, 3);
+                var courses = studentInformationDBEntities.Courses.OrderByDescending(c => c.CourseId).ToList().ToPagedList(page ?? 1, 3);
 
                 if (TempData["errorMessage"] != null)
                 {

@@ -74,11 +74,11 @@
                 @Html.EditorFor(model => model.StudentDoB, new { htmlAttributes = new { @class = "form-control", type = "date" } })
                 @Html.ValidationMessageFor(model => model.StudentDoB, "", new { @class = "text-danger" })
                 @*@if (@ViewBag.ageError != null)
-                {
-                    <h5 class="text-danger" style="margin:1px; color: darkred; padding:1px; ">
-                        @ViewBag.ageError
-                    </h5>
-                }*@
+                    {
+                        <h5 class="text-danger" style="margin:1px; color: darkred; padding:1px; ">
+                            @ViewBag.ageError
+                        </h5>
+                    }*@
             </div>
         </div>
 
@@ -141,3 +141,7 @@
 <div>
     @Html.ActionLink("Back to List", "StudentList")
 </div>
+
+<br />
+<br />
+<br />
