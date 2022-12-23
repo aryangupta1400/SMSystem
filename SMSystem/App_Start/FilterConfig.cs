@@ -9,5 +9,8 @@ namespace SMSystem
         {
             filters.Add(new HandleErrorAttribute());
         }
+
+        // add the session and custom error page here.
+
     }
 }

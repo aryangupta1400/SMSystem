@@ -9,10 +9,10 @@ namespace SMSystem.Controllers
 {
     public class StatusController : Controller
     {
-        // GET: Status
-
+        // object to access DB
         StudentInformationDBEntities studentInformationDBEntities = new StudentInformationDBEntities();
 
+        // Display the status list
         public ActionResult StatusList()
         {
             if (Session["AdminId"] != null)

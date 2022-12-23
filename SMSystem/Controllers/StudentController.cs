@@ -18,14 +18,16 @@ namespace SMSystem.Controllers
 {
     public class StudentController : Controller
     {
-        // GET: Student
-
+        // logger object to log events in logFile
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
+        // object to access DB
         StudentInformationDBEntities studentInformationDBEntities = new StudentInformationDBEntities();
 
+        // Registration method 
         public ActionResult StudentRegistration()
         {
+            #region authentication access
             if (Session["AdminId"] != null)
             {
                 SelectListItem[] courseName = GetCourseList();
@@ -35,17 +37,20 @@ namespace SMSystem.Controllers
                 return View();
                                 
             }
+            #endregion
 
+            // logging error
             logger.Error("Login Error --> Trying to access functional page without Login.");
 
             return RedirectToAction("LoginError", "Home");
 
         }
 
+        // Registration post method called when student model is passed
         [HttpPost]
         public async Task<ActionResult> StudentRegistration(Student newStudent)
         {
-
+            #region authentication access
             if (Session["AdminId"] != null)
             {
                 SelectListItem[] courseName = GetCourseList();
@@ -53,9 +58,9 @@ namespace SMSystem.Controllers
                 SelectListItem[] status = GetStatusList();
 
                 
-
                 if (ModelState.IsValid)
                 {
+                    #region storing details in DB when valid model state.
                     Student student = new Student();
 
                     /*student.StudentName = newStudent.StudentName;
@@ -90,26 +95,32 @@ namespace SMSystem.Controllers
                     await studentInformationDBEntities.SaveChangesAsync();
 
                     ModelState.Clear();
+                    #endregion
 
                     return RedirectToAction("StudentList");
                 }
 
                 return View();
             }
+            #endregion
 
+            // logging error
             logger.Error("Login Error --> Trying to access functional page without Login.");
 
             return RedirectToAction("LoginError", "Home");
 
         }
 
+        // method to return student list
         public ActionResult StudentList(int? page)
         {
             if (Session["AdminId"] != null)
             {
+                #region object used to display student list in Descending order.
                 var students = studentInformationDBEntities.Students.OrderByDescending(l => l.StudentId).ToList().ToPagedList(page??1, 3);
                                 
                 return View(students);
+                #endregion
             }
 
             logger.Error("Login Error --> Trying to access functional page without Login.");
@@ -117,6 +128,7 @@ namespace SMSystem.Controllers
             return RedirectToAction("LoginError", "Home");
         }
                 
+        // method to calculate age of student based on input DoB
         public int CalculateAge(DateTime dob)
         {
             int age = 0;
@@ -127,12 +139,14 @@ namespace SMSystem.Controllers
             return age;
         }
 
+        // Custom validation for Age of a student
         public JsonResult CheckAge(DateTime StudentDoB)
         {
             int age = CalculateAge(StudentDoB);
             return Json(age >= 16 ? true : false, JsonRequestBehavior.AllowGet);
         }
 
+        // method to edit student details
         public ActionResult EditStudent(int? id)
         {
             if (Session["AdminId"] != null)
@@ -171,6 +185,7 @@ namespace SMSystem.Controllers
             
         }
 
+        // method to add edited details to DB
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult EditStudent([Bind(Include = "StudentId, StudentName, StudentEmail, StudentMobile, Gender, StudentDoB, StudentAge, Address, CourseId, JoiningDate, StatusCode, ParentId")] Student student)
@@ -178,12 +193,14 @@ namespace SMSystem.Controllers
             if (Session["AdminId"] != null)
             {
                 if (ModelState.IsValid)
-                { 
+                {
+                    #region validate age and add updated details to DB
                     student.StudentAge = CalculateAge((DateTime)student.StudentDoB);
 
                     studentInformationDBEntities.Entry(student).State = EntityState.Modified;
 
                     studentInformationDBEntities.SaveChanges();
+                    #endregion
 
                     return RedirectToAction("StudentList");
                 }
@@ -196,6 +213,7 @@ namespace SMSystem.Controllers
             return RedirectToAction("LoginError", "Home");                                    
         }
 
+        // Search by filter
         public ActionResult StudentSearch(string searchBy, string search, int? page)
         {
             if (Session["AdminId"] != null)
@@ -207,6 +225,7 @@ namespace SMSystem.Controllers
 
                 if (searchBy == "StudentId" && search != null)
                 {
+                    #region search by Student Id
                     try
                     {
                         int? id = Convert.ToInt32(search);
@@ -222,10 +241,11 @@ namespace SMSystem.Controllers
 
                         return View(model);
                     }
+                    #endregion
                 }
                 else if (searchBy == "StudentName" && search != null)
                 {
-
+                    #region search by Student Name
                     try
                     {
                         var model = studentInformationDBEntities.Students.Where(s => s.StudentName.StartsWith(search) || search == null).ToList().ToPagedList(page ?? 1, 3); ;
@@ -240,10 +260,11 @@ namespace SMSystem.Controllers
 
                         return View(model);
                     }
-
+                    #endregion
                 }
                 else if (searchBy == "StudentEmail" && search != null)
                 {
+                    #region search by Student Email
                     try
                     {
                         var model = studentInformationDBEntities.Students.Where(s => s.StudentEmail == search.ToLower() || search.ToLower() == null).ToList().ToPagedList(page ?? 1, 3); ;
@@ -258,10 +279,11 @@ namespace SMSystem.Controllers
 
                         return View(model);
                     }
-
+                    #endregion
                 }
                 else if (searchBy == "Gender" && search != null)
                 {
+                    #region search by Gender
                     try
                     {
                         var model = studentInformationDBEntities.Students.Where(s => s.Gender.ToLower() == search.ToLower() || search == null).ToList().ToPagedList(page ?? 1, 3); ;
@@ -276,10 +298,11 @@ namespace SMSystem.Controllers
 
                         return View(model);
                     }
-
+                    #endregion
                 }
                 else if (searchBy == "CourseId" && search != null)
                 {
+                    #region search by Course
                     try
                     {
                         int? id = GetCourseId(search);
@@ -299,10 +322,11 @@ namespace SMSystem.Controllers
 
                         return View(model);
                     }
-
+                    #endregion
                 }
                 else if (searchBy == "StatusCode" && search != null)
                 {
+                    #region search by Status
                     try
                     {
                         int? id = GetStatusCode(search);
@@ -322,9 +346,8 @@ namespace SMSystem.Controllers
 
                         return View(model);
                     }
-
+                    #endregion
                 }
-
                 return RedirectToAction("StudentList");
             }
 
@@ -334,6 +357,7 @@ namespace SMSystem.Controllers
             
         }
 
+        // Profile page to display all details of a student
         public ActionResult StudentProfile(int? id)
         {
             if (Session["AdminId"] != null)
@@ -345,10 +369,10 @@ namespace SMSystem.Controllers
 
             logger.Error("Login Error --> Trying to access functional page without Login.");
 
-            return RedirectToAction("LoginError", "Home");
-            
+            return RedirectToAction("LoginError", "Home");            
         }
 
+        // method to get course ID from name
         protected int GetCourseId(string course)
         {
             int courseId = 0;
@@ -366,6 +390,7 @@ namespace SMSystem.Controllers
             return courseId;
         }
 
+        // method to get status code from status desc.
         protected int GetStatusCode(string status)
         {
             int statusCode = 0;
@@ -390,6 +415,7 @@ namespace SMSystem.Controllers
             return a;
         }*/
 
+        // fetch course list from master table for dropdrown
         protected SelectListItem[] GetCourseList()
         {
             var names = studentInformationDBEntities.Courses.Where(c => c.IsValid == true).Select(n => new SelectListItem()
@@ -409,6 +435,7 @@ namespace SMSystem.Controllers
 
         }
 
+        // fetch status list from master table for dropdrown
         protected SelectListItem[] GetStatusList()
         {
             var code = studentInformationDBEntities.Status.Select(n => new SelectListItem()
@@ -427,6 +454,7 @@ namespace SMSystem.Controllers
         }
     }
 
+    // custom validation to validate age
     public class AgeValidator : ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
