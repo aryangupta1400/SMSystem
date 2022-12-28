@@ -1,6 +1,7 @@
 # SMS
 
-<h2>SMS - a Student Management System that allows institutions to manage their student data conveniently.</h2>
+<h3>SMS - a Student Management System that allows institutions to manage their student data conveniently.</h3>
+
 <ul>
   <h3>Features</h3>
   <li>Admin Registration and Login</li>
